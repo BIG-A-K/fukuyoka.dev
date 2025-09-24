@@ -33,9 +33,7 @@ services:
     environment:
       HUGO_ENV: production
       DOMAIN: ${DOMAIN}
-    command: server --bind 0.0.0.0 --port 1313 --baseURL https://${DOMAIN} --appendPort=false --disableLiveReload
-    ports:
-      - "1313:1313"
+    command: server --bind 0.0.0.0 --port 1313 --baseURL https://${DOMAIN} --appendPort=false
     volumes:
       - ../frontend:/src
     restart: unless-stopped
