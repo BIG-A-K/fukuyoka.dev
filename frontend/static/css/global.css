@@ -3,10 +3,7 @@
     --bg-color: #d1d9de;
     --body-bg: #d1d9de;
     --text-color: #2f3336;
-    --header-bg: rgba(172, 188, 188, 0.5);
     --border-color: #444;
-    --header-a-color: #1b2830;
-    --header-a-hover: #8a4b03;
     --link-color: #1b2830;
     --link-visited:#9ea4a8;
     --link-hover: #0d0f0f;
@@ -16,9 +13,6 @@
     --main-h2: #3b4344;
     --main-h3: #545f61;
     --title-color: skyblue;
-    --footer-bg: rgba(172, 188, 188, 0.5);
-    --footer-link: #00bfff;
-    --footer-hover: #ff4500;
 }
 
 html {
@@ -44,95 +38,6 @@ code {
 }
 
 
-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    z-index: 100;
-    width: 100%;
-    padding: 20px 0;
-    background-size: cover;
-    background-position: center;
-    background: var(--header-bg);
-    color: var(--text-color);
-    border-bottom: 2px solid var(--border-color);
-}
-header h1 {
-    color: var(--title-color);
-    z-index: 1;
-    flex-grow: 1;
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: normal;
-    max-width: calc(100% - 80px); /* 両サイドのアイコンの幅を考慮 */
-    font-size: 1.5em;
-}
-
-.icon{
-    width: 40px;
-    display: flex;
-}
-
-#theme-toggle {
-    font-size: 1.5rem;
-    color: var(--text-color);
-    border: none;
-    right: 10px;
-    position: absolute;
-    background: transparent;
-    cursor: pointer;
-    padding: 10px;
-}
-
-#sidebarToggle {
-    font-size: 1.5em;
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-
-
-header a {
-    color: var(--link-color);
-    text-decoration: none;
-    
-}
-
-header nav {
-    display: none;
-}
-
-@media (min-width: 768px) {
-    header nav {
-        display: block;
-    }
-    header #title {
-        display: none;
-    }    
-    #sidebarToggle {
-        display: none;
-    }
-    header nav ol {
-        list-style: none;
-        padding: 0;
-        margin: 10px 0;
-        display: flex;
-        justify-content: center;
-    }
-    header nav ol li {
-        margin: 0 10px;
-    }
-    header nav ol li a {
-        color: var(--header-a-color);
-    }
-
-    header nav ol li a:hover {
-        color: var(--header-a-hover);
-    }
-}
 
 /* ヘッダーの高さ分のマージンをリンク先要素に設定 */
 h2, h3, h4, h5, h6 {
@@ -200,40 +105,6 @@ img {
 
 .center-text {
     text-align: center;
-}
-
-footer {
-    font-family:"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
-    width: 100%;
-    padding: 10px 0;
-    text-align: center;
-    border-radius: 20px 20px 20px 20px;
-    background: var(--footer-bg);
-    margin-top: auto;
-}
-
-footer a {
-    color: var(--main-color);
-    border-bottom: none;
-    text-decoration: none;
-}
-footer nav a {
-    padding: 0 10px;
-    display: inline-flex;
-    align-items: center;
-}
-footer nav a svg {
-    width: 1.8em;
-    height: 1.8em;
-}
-footer a i{
-    font-size: 2em;
-    padding : 0 10px;
-}
-footer a:hover {
-    color: var(--link-hover);
-    border-bottom: none;
-    text-decoration: none;
 }
 
 .google-form-frame {

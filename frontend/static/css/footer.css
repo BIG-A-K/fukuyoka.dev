@@ -1,0 +1,39 @@
+:root {
+    --footer-bg: #fff;
+    --footer-link: #00bfff;
+    --footer-hover: #ff4500;
+ }
+footer {
+    font-family:"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 20px 20px 20px 20px;
+    background: var(--footer-bg);
+    margin-top: auto;
+}
+
+footer a {
+    color: var(--main-color);
+    border-bottom: none;
+    text-decoration: none;
+}
+footer nav a {
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+}
+footer nav a svg {
+    width: 1.8em;
+    height: 1.8em;
+}
+footer a i{
+    font-size: 2em;
+    padding : 0 10px;
+}
+footer a:hover {
+    color: var(--link-hover);
+    border-bottom: none;
+    text-decoration: none;
+}
+

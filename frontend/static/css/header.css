@@ -1,0 +1,106 @@
+/* Header-specific styles extracted from global.css */
+:root {
+    --header-bg: #f8f9fa;
+    --text-color: #333;
+    --header-a-color: #1b2830;
+    --header-a-hover: #8a4b03;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    padding: 20px 0;
+    background-size: cover;
+    background-position: center;
+    background: var(--header-bg);
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+header h1 {
+    color: var(--title-color);
+    z-index: 1;
+    flex-grow: 1;
+    position:absolute;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: normal;
+    max-width: calc(100% - 80px); /* 両サイドのアイコンの幅を考慮 */
+    font-size: 1.5em;
+}
+
+header #title{
+    display: block;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+}
+.icon{
+    width: 40px;
+    display: flex;
+}
+
+#theme-toggle {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    border: none;
+    right: 10px;
+    position: absolute;
+    background: transparent;
+    cursor: pointer;
+    padding: 10px;
+}
+
+#sidebarToggle {
+    font-size: 1.5em;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+header a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+header nav {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    header nav {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    #sidebarToggle {
+        display: none;
+    }
+    header nav ol {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+        display: flex;
+        justify-content: center;
+    }
+    header nav ol li {
+        margin: 0 10px;
+    }
+    header nav ol li a {
+        color: var(--header-a-color);
+    }
+
+    header nav ol li a:hover {
+        color: var(--header-a-hover);
+    }
+}
