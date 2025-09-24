@@ -1,0 +1,258 @@
+:root {
+    color-scheme: light dark;
+    --bg-color: #d1d9de;
+    --body-bg: #d1d9de;
+    --text-color: #2f3336;
+    --header-bg: rgba(172, 188, 188, 0.5);
+    --border-color: #444;
+    --header-a-color: #1b2830;
+    --header-a-hover: #8a4b03;
+    --link-color: #1b2830;
+    --link-visited:#9ea4a8;
+    --link-hover: #0d0f0f;
+    --link-vh-botton:#5f666c;
+    --main-bg: #fff;
+    --main-color:#000;
+    --main-h2: #3b4344;
+    --main-h3: #545f61;
+    --title-color: skyblue;
+    --footer-bg: rgba(172, 188, 188, 0.5);
+    --footer-link: #00bfff;
+    --footer-hover: #ff4500;
+}
+
+html {
+    background-size: 224px;
+    height: 100%;
+    transition: background 0.2s ease-in-out;
+    background: var(--bg-color);
+}
+body {
+    transition: opacity 0.2s ease-in-out;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100%;
+    background: var(--body-bg);
+    color: var(--text-color);
+}
+
+code {
+    font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,Bitstream Vera Sans Mono, Courier New, monospace;    
+}
+
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    padding: 20px 0;
+    background-size: cover;
+    background-position: center;
+    background: var(--header-bg);
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+}
+header h1 {
+    color: var(--title-color);
+    z-index: 1;
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: normal;
+    max-width: calc(100% - 80px); /* 両サイドのアイコンの幅を考慮 */
+    font-size: 1.5em;
+}
+
+.icon{
+    width: 40px;
+    display: flex;
+}
+
+#theme-toggle {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    border: none;
+    right: 10px;
+    position: absolute;
+    background: transparent;
+    cursor: pointer;
+    padding: 10px;
+}
+
+#sidebarToggle {
+    font-size: 1.5em;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+header a {
+    color: var(--link-color);
+    text-decoration: none;
+    
+}
+
+header nav {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    header nav {
+        display: block;
+    }
+    header #title {
+        display: none;
+    }    
+    #sidebarToggle {
+        display: none;
+    }
+    header nav ol {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+        display: flex;
+        justify-content: center;
+    }
+    header nav ol li {
+        margin: 0 10px;
+    }
+    header nav ol li a {
+        color: var(--header-a-color);
+    }
+
+    header nav ol li a:hover {
+        color: var(--header-a-hover);
+    }
+}
+
+/* ヘッダーの高さ分のマージンをリンク先要素に設定 */
+h2, h3, h4, h5, h6 {
+    scroll-margin-top: 100px; /* ヘッダーの高さに応じて調整 */
+}
+  
+main h2{
+    color: var(--main-h2);
+}
+main h3{
+    font-size: 1.3em;
+    color: var(--main-h3);
+}
+
+main h2 {
+    padding-bottom: 5px;
+    margin-top: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+main {
+    width: 90%;
+    color: var(--main-color);
+    background: var(--main-bg);
+    padding: 20px;
+    margin: 100px;
+    border-radius: 20px;
+    box-shadow: var(--main-shadow);
+}
+main p a {
+    color: var(--link-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--link-color);
+}
+
+main p a:visited {
+    color: var(--link-hover);
+    border-bottom: 1px solid var(--link-vh-botton);
+}
+
+main p a:hover {
+    color: var(--link-visited);
+    border-bottom: 1px solid var(--link-vh-botton)
+}    
+
+
+@media (min-width: 640px) {
+    main {
+        min-height: 28rem;
+    }
+}
+
+
+img {
+    border-radius: 0.375rem;
+    margin: auto;
+    max-width: 80%;
+    height: auto;
+    display: block;
+}
+
+.hr-line {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.center-text {
+    text-align: center;
+}
+
+footer {
+    font-family:"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 20px 20px 20px 20px;
+    background: var(--footer-bg);
+    margin-top: auto;
+}
+
+footer a {
+    color: var(--main-color);
+    border-bottom: none;
+    text-decoration: none;
+}
+footer nav a {
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+}
+footer nav a svg {
+    width: 1.8em;
+    height: 1.8em;
+}
+footer a i{
+    font-size: 2em;
+    padding : 0 10px;
+}
+footer a:hover {
+    color: var(--link-hover);
+    border-bottom: none;
+    text-decoration: none;
+}
+
+.google-form-frame {
+    width: 100%;
+    height: 100%;
+    min-height: 1000px; /* 最小高さを指定 */
+    border: none;
+}
+.google-form-container {
+    width: 100%;
+    min-height: 1000px; /* 最小高さを指定 */
+    top :0;
+    position: relative;
+}
+.google-form-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}

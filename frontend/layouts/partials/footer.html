@@ -1,0 +1,11 @@
+<footer>
+  {{ with site.Params.email }}
+  <small>
+    メール: <a href="mailto:{{ . }}">{{ . }}</a>
+  </small>
+  {{ end }}
+  <br>
+  <small>
+    &copy; {{ now.Year }} Yukija Kuroda all rights reserved.
+  </small>
+</footer>

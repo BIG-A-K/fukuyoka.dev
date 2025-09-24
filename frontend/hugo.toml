@@ -1,0 +1,6 @@
+baseURL = 'https://www.fukuyoka.dev/'
+languageCode = 'ja'
+title = 'たくさん食べるぞぉお😋'
+
+[Params]
+email = 'yukijya@big-a-k.com'
