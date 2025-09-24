@@ -1,0 +1,40 @@
+{{/*
+  Renders a square thumbnail for a post.
+  Preferred: set front matter `thumbnail` to a path or URL.
+  Fallback: use site favicon.
+  Examples:
+    thumbnail = "/images/sushi.jpg"
+    thumbnail = "images/sushi.jpg"   (will be normalized to start with /)
+    thumbnail = "https://example.com/cover.jpg"
+*/}}
+
+{{ $imgURL := "" }}
+
+{{ with .Params.thumbnail }}
+  {{ $src := . }}
+  {{ if or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "/") }}
+    {{ $imgURL = $src }}
+  {{ else }}
+    {{ $imgURL = (printf "/%s" $src) }}
+  {{ end }}
+{{ else }}
+  {{ $imgURL = "/favicon.png" }}
+{{ end }}
+
+<img src="{{ $imgURL }}" alt="{{ $.Title }}" loading="lazy" />
+<div class="thumb-caption">
+  <p class="thumb-title">{{ $.Title }}</p>
+  <p class="thumb-meta">
+    {{ with .Date }}
+      <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006/01/02" }}</time>
+    {{ end }}
+  </p>
+  {{ with .Params.tags }}
+    <div class="thumb-tags">
+      {{ range . }}
+        <span class="thumb-tag">#{{ . }}</span>
+      {{ end }}
+    </div>
+  {{ end }}
+  
+</div>

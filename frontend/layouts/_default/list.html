@@ -1,15 +1,14 @@
 {{ define "main" }}
-  <h1>記事一覧</h1>
+  <h1>{{ .Title }}</h1>
   <ul class="post-grid">
-    {{ $posts := where .Site.RegularPages "Section" "posts" }}
-    {{ range $posts.ByDate.Reverse | first 100 }}
+    {{ range .Pages.ByDate.Reverse }}
       <li>
         <a href="{{ .RelPermalink }}" aria-label="{{ .Title }}">
           {{ partial "post-thumb.html" . }}
         </a>
       </li>
     {{ else }}
-      まだ記事がありません。
+      <li class="thumb-fallback">記事がありません。</li>
     {{ end }}
   </ul>
 {{ end }}
