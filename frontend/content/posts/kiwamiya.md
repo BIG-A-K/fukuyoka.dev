@@ -5,23 +5,25 @@ draft = false
 description = ''
 tags = ['ステーキ']
 categories = ['ふくよか']
-thumbnail = '/photo/gokumiya/start.jpg'
+thumbnail = '/photo/kiwamiya/start.jpg'
 +++
 
 
 東京駅にあるお肉屋さんです！
 
+公式サイトは[ここから](https://kiwamiya.com/shoplist/tokyo-station)どうぞ！
+
 とても美味しいA5ランクのステーキやハンバーグが手頃な値段で食べられるのでおすすめ。
 
 普段は結構混んでいます。
-![入り口はこんな感じ](/photo/gokumiya/01.jpg)
+![入り口はこんな感じ](/photo/kiwamiya/01.jpg)
 
 今回私がいただいたのはステーキで、サイズは一番大きいもの。
 値段は忘れましたが、大体4000円弱だったと思います。
 
-![店員さんがチョット焼いてくれる](/photo/gokumiya/comming.jpg)
+![店員さんがチョット焼いてくれる](/photo/kiwamiya/comming.jpg)
 ここではレアの状態で出されます。追加で自分の好きな加減で焼いて食べるシステムです。
-![美味しそう](/photo/gokumiya/start.jpg)
+![美味しそう](/photo/kiwamiya/start.jpg)
 
 私はミディアムレアが好きなのでちょっと焼き足して食べました。
 
@@ -29,6 +31,6 @@ thumbnail = '/photo/gokumiya/start.jpg'
 お肉とセットでご飯とスープ、サラダに食後のソフトクリームが付きます。しかもご飯とソフトクリームはおかわり自由。
 個人的にご飯の炊き方が良くてお肉に合ってとても美味しかったのでおすすめです。
 
-![美味しそう](/photo/gokumiya/ajimi.jpg)
+![美味しそう](/photo/kiwamiya/ajimi.jpg)
 
 ちなみにハンバーグも同様で、こちらは中まで火を通さなくてはならないのでちょっと手間ですが、こちらも美味しかったです。
