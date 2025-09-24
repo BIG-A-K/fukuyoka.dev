@@ -31,18 +31,16 @@ nginx/.htpasswd
 
 ### Hugo ###
 # Generated files by hugo
-/public/
-/resources/_gen/
-/assets/jsconfig.json
-hugo_stats.json
-
-# Executable may be added to repository
-hugo.exe
-hugo.darwin
-hugo.linux
+frontend/public/
+frontend/frontend
+frontend/resources/_gen/
+frontend/assets/jsconfig.json
+frontend/hugo_stats.json
+frontend/themes
+frontend/static/photo/
 
 # Temporary lock file while building
-/.hugo_build.lock
+frontend/.hugo_build.lock
 
 # End of https://www.toptal.com/developers/gitignore/api/hugo
 

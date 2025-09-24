@@ -1,0 +1,16 @@
+{{/*
+  Markdown image render hook: wraps image with figure + figcaption.
+  Caption priority: Title ("..." in Markdown) > Alt text
+  Usage in Markdown: ![alt text](/path.jpg "caption here")
+*/}}
+{{ $src := .Destination | safeURL }}
+{{ $alt := .Text | plainify }}
+{{ $title := .Title | plainify }}
+
+<figure class="md-image">
+  <img src="{{ $src }}" alt="{{ $alt }}"{{ with $title }} title="{{ . }}"{{ end }} />
+  {{ if or $title $alt }}
+    <figcaption>{{ if $title }}{{ $title }}{{ else }}{{ $alt }}{{ end }}</figcaption>
+  {{ end }}
+  </figure>
+

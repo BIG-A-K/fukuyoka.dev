@@ -1,0 +1,33 @@
+{{ define "main" }}
+  {{/* Determine representative thumbnail from newest post in this taxonomy */}}
+  {{ $thumb := "" }}
+  {{ with (first 1 (.Pages.ByDate.Reverse)) }}
+    {{ $p := index . 0 }}
+    {{ with $p.Params.thumbnail }}
+      {{ $src := . }}
+      {{ if or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "/") }}
+        {{ $thumb = $src }}
+      {{ else }}
+        {{ $thumb = (printf "/%s" $src) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ if eq $thumb "" }}
+    {{ $thumb = "/favicon.png" }}
+  {{ end }}
+  <h1>
+    {{ .Title }}
+  </h1>
+  <ul class="post-grid">
+    {{ range .Pages.ByDate.Reverse }}
+      <li>
+        <a href="{{ .RelPermalink }}" aria-label="{{ .Title }}">
+          {{ partial "post-thumb.html" . }}
+        </a>
+      </li>
+    {{ else }}
+      <li class="thumb-fallback">記事がありません。</li>
+    {{ end }}
+  </ul>
+{{ end }}
+

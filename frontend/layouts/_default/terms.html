@@ -1,0 +1,37 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+
+  {{ $taxName := .Data.Plural }}
+  {{ $tax := index .Site.Taxonomies $taxName }}
+
+  <ul class="post-grid">
+    {{ range $term, $pages := $tax }}
+      {{ $thumb := "" }}
+      {{/* $pages is page.WeightedPages (not .Pages), so sort by Page.Date */}}
+      {{ with (first 1 (sort $pages "Page.Date" "desc")) }}
+        {{ $p := index . 0 }}
+        {{ with $p.Page.Params.thumbnail }}
+          {{ $src := . }}
+          {{ if or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "/") }}
+            {{ $thumb = $src }}
+          {{ else }}
+            {{ $thumb = (printf "/%s" $src) }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      {{ if eq $thumb "" }}
+        {{ $thumb = "/favicon.png" }}
+      {{ end }}
+
+      <li>
+        <a href="/{{ $taxName }}/{{ $term | urlize }}/" aria-label="{{ $term }}">
+          <img src="{{ $thumb }}" alt="{{ $term }}" loading="lazy" />
+          <div class="thumb-caption">
+            <p class="thumb-title">{{ $term }}</p>
+            <p class="thumb-meta">{{ len $pages }} 件</p>
+          </div>
+        </a>
+      </li>
+    {{ end }}
+  </ul>
+{{ end }}

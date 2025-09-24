@@ -44,6 +44,9 @@ h2, h3, h4, h5, h6 {
     scroll-margin-top: 100px; /* ヘッダーの高さに応じて調整 */
 }
   
+main h1{
+    text-align: center;
+}
 main h2{
     color: var(--main-h2);
 }
@@ -59,6 +62,7 @@ main h2 {
 }
 main {
     width: 90%;
+    max-width: 900px;
     color: var(--main-color);
     background: var(--main-bg);
     padding: 20px;
@@ -97,6 +101,32 @@ img {
     height: auto;
     display: block;
 }
+
+/* Taxonomy header thumbnail (tag/category) */
+.tax-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.tax-thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; }
+.tax-title { margin: 0; }
+
+/* Markdown images inside post content: smaller than default */
+.post-body img {
+    max-width: 60%;
+    max-height: 400px;
+}
+
+/* Markdown image caption */
+.post-body figure.md-image { margin: 1.2rem auto; text-align: center; }
+.post-body figure.md-image img { display: block; margin: 0 auto; }
+.post-body figure.md-image figcaption { margin-top: 6px; font-size: 0.85rem; color: #5f666c; line-height: 1.3; }
+
+/* Image modal */
+.post-body img.zoomable { cursor: zoom-in; }
+.img-modal { position: fixed; inset: 0; display: none; z-index: 9999; }
+.img-modal.open { display: block; }
+.img-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+.img-modal__figure { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 24px; }
+.img-modal__img { max-width: 92vw; max-height: 90vh; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.img-modal__close { position: absolute; top: 12px; right: 12px; font-size: 28px; line-height: 1; border: 0; background: rgba(0,0,0,0.5); color: #fff; border-radius: 6px; width: 40px; height: 40px; cursor: pointer; }
+.img-modal__caption { margin-top: 10px; color: #fff; text-align: center; max-width: 92vw; }
 
 .hr-line {
     width: 100%;

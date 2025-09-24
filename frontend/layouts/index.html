@@ -1,5 +1,9 @@
 {{ define "main" }}
   <h1>記事一覧</h1>
+  <p class="center-text">
+  このサイトは私の美味しいと思った食事を記録するためのブログです。<br>
+  たくさん食べて大きく、すこやかにふくよかになろう！😋
+  </p>
   <ul class="post-grid">
     {{ $posts := where .Site.RegularPages "Section" "posts" }}
     {{ range $posts.ByDate.Reverse | first 100 }}
