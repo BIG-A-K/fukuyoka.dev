@@ -1,7 +1,11 @@
 :root {
     color-scheme: light dark;
-    --bg-color: #d1d9de;
-    --body-bg: #d1d9de;
+    /* header */
+    --header-bg: #FFF8F0;
+    --header-a-color: #1b2830;
+    --header-a-hover: #8a4b03;
+    --bg-color: #d1d1c8;
+    --body-bg: #d1d1c8;
     --text-color: #2f3336;
     --border-color: #444;
     --link-color: #1b2830;
@@ -13,6 +17,13 @@
     --main-h2: #3b4344;
     --main-h3: #545f61;
     --title-color: skyblue;
+    /* footer */
+    --footer-bg: #b9b1a0;
+    --footer-link: #00bfff;
+    --footer-hover: #ff4500;
+    /* gallery */
+    --gallery-bg: #FFF8F0;
+
 }
 
 html {
@@ -37,6 +48,16 @@ code {
     font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,Bitstream Vera Sans Mono, Courier New, monospace;    
 }
 
+main {
+    width: 90%;
+    max-width: 900px;
+    color: var(--main-color);
+    background: var(--main-bg);
+    padding: 20px;
+    margin: 50px;
+    border-radius: 20px;
+    box-shadow: var(--main-shadow);
+}
 
 
 /* ヘッダーの高さ分のマージンをリンク先要素に設定 */
@@ -59,16 +80,6 @@ main h2 {
     padding-bottom: 5px;
     margin-top: 20px;
     border-bottom: 2px solid var(--border-color);
-}
-main {
-    width: 90%;
-    max-width: 900px;
-    color: var(--main-color);
-    background: var(--main-bg);
-    padding: 20px;
-    margin: 100px;
-    border-radius: 20px;
-    box-shadow: var(--main-shadow);
 }
 main p a {
     color: var(--link-color);

@@ -12,7 +12,7 @@
   aspect-ratio: 3/4; /* taller than wide to fit caption */
   overflow: hidden;
   border-radius: 12px;
-  background: #e9eef2;
+  background: var(--gallery-bg);
 }
 
 .post-grid a {

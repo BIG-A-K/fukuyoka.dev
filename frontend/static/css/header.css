@@ -1,12 +1,7 @@
 /* Header-specific styles extracted from global.css */
-:root {
-    --header-bg: #f8f9fa;
-    --text-color: #333;
-    --header-a-color: #1b2830;
-    --header-a-hover: #8a4b03;
-}
 header {
     display: flex;
+    border-radius: 12px;
     align-items: center;
     justify-content: center;
     position: fixed;
