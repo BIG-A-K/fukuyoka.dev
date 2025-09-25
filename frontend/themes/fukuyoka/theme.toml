@@ -1,0 +1,13 @@
+name = "fukuyoka"
+license = "MIT"
+licenselink = ""
+description = "Simple custom theme for fukuyoka.dev"
+homepage = "https://www.fukuyoka.dev/"
+tags = ["blog", "minimal", "japanese"]
+features = ["posts"]
+min_version = "0.124.0"
+
+[author]
+  name = "fukuyoka"
+  homepage = "https://www.fukuyoka.dev/"
+
