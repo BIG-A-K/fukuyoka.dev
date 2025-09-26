@@ -1,6 +1,6 @@
 +++
 title = 'なりたけ'
-date = 2025-09-25T01:37:20+09:00
+date = 2025-09-24T01:37:20+09:00
 draft = false
 description = ''
 tags = ['ラーメン']
