@@ -3,7 +3,7 @@ title = '極味や'
 date = 2025-09-06T02:18:39+09:00
 draft = false
 description = ''
-tags = ['肉類']
+tags = ['肉類','おすすめ']
 categories = ['ふくよか']
 thumbnail = '/photo/kiwamiya/start.jpg'
 +++
