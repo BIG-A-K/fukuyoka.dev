@@ -7,7 +7,11 @@
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;
 }
-
+@media (max-width: 600px) {
+  .post-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
 .post-grid li {
   aspect-ratio: 3/4; /* taller than wide to fit caption */
   overflow: hidden;
@@ -57,7 +61,6 @@
   font-weight: 600;
   /* truncate long titles to 2 lines */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
