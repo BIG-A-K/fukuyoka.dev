@@ -5,13 +5,13 @@ draft = false
 description = ''
 tags = ['日記']
 categories = ['すこやか','日記']
-thumbnail = '/photo/welch0.jpeg'
+thumbnail = '/photo/welch0.jpg'
 +++
 
 もう飲んでしまった。
 空のペットボトルを写すことになって大変申し訳ないが、こんな感じのボトルに見覚えはないか？
 
-![こんな感じのボトル](/photo/welch1.jpeg)
+![こんな感じのボトル](/photo/welch1.jpg)
 
 そう。[ウェルチ](https://www.asahiinryo.co.jp/welch/)だ。t検定の方ではない。葡萄ジュースの方だ。
 愛すべき葡萄ジュース！
@@ -21,7 +21,7 @@ thumbnail = '/photo/welch0.jpeg'
 
 だがこの800ml版の方は違う。100%なのだ！💥
 
-![パッケージ裏面](/photo/welch3.jpeg)
+![パッケージ裏面](/photo/welch3.jpg)
 
 裏面にはこう書いてあるじゃないか、「ぶどうジュース」と。
 
@@ -36,4 +36,4 @@ thumbnail = '/photo/welch0.jpeg'
 
 だから僕はこのウェルチを愛用している。
 
-![ちょっと濃ゆい](/photo/welch0.jpeg)
+![ちょっと濃ゆい](/photo/welch0.jpg)
