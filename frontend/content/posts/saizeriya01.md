@@ -53,7 +53,6 @@ thumbnail = '/photo/saizeriya/diavola.jpg'
 
 ![バッファローモッツァレラのマルゲリータピザ](/photo/saizeriya/pizza.jpg)
 
-ターンエンド。ふくよか堂はまだまだ遠い。
 
 最後に会計ですが、
 - ピザ：400
