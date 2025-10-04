@@ -1,0 +1,30 @@
+{{ define "title" }}404 - ページが見つかりません{{ end }}
+
+{{ define "main" }}
+  <h1>404 - ページが見つかりません</h1>
+  <p class="center-text">
+    お探しのページは移動または削除された可能性があります。<br>
+    下のリンクから目的のページへ移動してください。
+  </p>
+  <p class="center-text">
+    <a href="/">サイトトップ</a> / 
+    <a href="/posts/">全記事</a> / 
+    <a href="/tags/">タグ</a> / 
+    <a href="/categories/">カテゴリ</a>
+  </p>
+
+  <h2>最近の投稿</h2>
+  <ul class="post-grid">
+    {{ $posts := where .Site.RegularPages "Section" "posts" }}
+    {{ range $posts.ByDate.Reverse | first 12 }}
+      <li>
+        <a href="{{ .RelPermalink }}" aria-label="{{ .Title }}">
+          {{ partial "post-thumb.html" . }}
+        </a>
+      </li>
+    {{ else }}
+      <li class="thumb-fallback">記事がありません。</li>
+    {{ end }}
+  </ul>
+{{ end }}
+
