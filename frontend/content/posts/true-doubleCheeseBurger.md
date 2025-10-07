@@ -1,5 +1,5 @@
 +++
-title = '真のチーズバーガーをみよ！'
+title = '真のダブルチーズバーガーをみよ！'
 date = 2025-10-06T14:27:57+09:00
 draft = false
 description = ''
