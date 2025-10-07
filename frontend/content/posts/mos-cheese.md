@@ -3,7 +3,7 @@ title = 'モスバーガーの新作チーズバーガー'
 date = 2025-09-26T17:36:12+09:00
 draft = false
 description = ''
-tags = ['ハンバーガー']
+tags = ['ハンバーガー','サラダ']
 categories = ['日記','すこやか']
 thumbnail = '/photo/mosburger/cheese/burger.jpg'
 +++

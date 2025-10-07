@@ -3,7 +3,7 @@ title = '幸楽苑'
 date = 2025-10-05T00:54:55+09:00
 draft = false
 description = ''
-tags = ['日記','幸楽苑']
+tags = ['日記','麺類']
 categories = ['ふくよか']
 thumbnail = '/photo/20251005/IMG_6187.jpeg'
 +++

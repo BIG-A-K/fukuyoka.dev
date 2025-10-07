@@ -3,7 +3,7 @@ title = 'なりたけ'
 date = 2025-09-24T01:37:20+09:00
 draft = false
 description = ''
-tags = ['ラーメン','おすすめ']
+tags = ['麺類','おすすめ']
 categories = ['ふくよか']
 thumbnail = '/photo/naritake.jpg'
 +++

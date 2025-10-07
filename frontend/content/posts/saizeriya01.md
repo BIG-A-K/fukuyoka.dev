@@ -3,7 +3,7 @@ title = 'サイゼリヤ'
 date = 2025-09-28T23:50:18+09:00
 draft = false
 description = ''
-tags = ['サイゼリヤ','日記']
+tags = ['日記','サラダ']
 categories = ['ふくよか','日記']
 thumbnail = '/photo/saizeriya/diavola.jpg'
 +++

@@ -3,7 +3,7 @@ title = '麻辣湯 in 楊国福麻辣湯'
 date = 2025-10-06T19:36:18+09:00
 draft = false
 description = ''
-tags = ['おすすめ','中華','楊国福麻辣湯']
+tags = ['おすすめ','麺類','中華']
 categories = ['ふくよか']
 thumbnail = '/photo/malady/IMG_5887.jpeg'
 +++
