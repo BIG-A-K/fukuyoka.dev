@@ -25,6 +25,35 @@
     --gallery-bg: #FFF8F0;
 
 }
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* header */
+        --header-bg: #1b2830;
+        --header-a-color: #c9d1d9;
+        --header-a-hover: #fff;
+        --bg-color: #0d1117;
+        --body-bg: #0d1117;
+        --text-color: #c9d1d9;
+        --border-color: #444;
+        --link-color: #1a1d25;
+        --link-visited:#9ea4a8;
+        --link-hover: #fff;
+        --link-vh-botton:#5f666c;
+        --main-bg: #161b22;
+        --main-color:#c9d1d9;
+        --main-h2: #adbac7;
+        --main-h3: #8b949e;
+        --title-color: skyblue;
+        /* footer */
+        --footer-bg: #161b22;
+        --footer-link: #58a6ff;
+        --footer-hover: #ff4500;
+        /* gallery */
+        --gallery-bg: #1b2830;
+        --tag-bg: #30363d;
+        --tag-border: #444c56;
+    }
+}
 
 html {
     background-size: 224px;
