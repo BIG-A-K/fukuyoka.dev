@@ -10,8 +10,7 @@ thumbnail = '/photo/malady/IMG_5887.jpeg'
 
 麻辣湯とは中国の四川省で生まれたスープの一種で、とても辛いのが特徴とされています。
 
-今回はそんな麻辣湯の専門店である[楊国福麻辣湯](https://www.daitengen-jp.com/%E6%A5%8A%E5%9B%BD%E7%A6%8F%E9%BA%BB%E8%BE%A3%E6%B9%AF/)
-に行きました。
+今回はそんな麻辣湯の専門店である[楊国福麻辣湯](https://www.daitengen-jp.com/%E6%A5%8A%E5%9B%BD%E7%A6%8F%E9%BA%BB%E8%BE%A3%E6%B9%AF/)に行きました。
 中華人民共和国に本店を置く麻辣湯(マーラータン)のチェーン店です。
 
 
