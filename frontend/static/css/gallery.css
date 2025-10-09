@@ -67,7 +67,8 @@
 .post-grid .thumb-meta { margin: 6px 0 0; color: #5f666c; font-size: 0.85rem; line-height: 1.2; }
 
 .post-grid .thumb-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-.post-grid .thumb-tag { background: #f0f3f6; color: var(--link-color); border: 1px solid #e0e5ea; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; }
+.post-grid .thumb-tag { background: var(--tag-bg); color: var(--tag-label); border: 1px solid var(--tag-border); padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; }
+/* .post-grid .thumb-tag { background: #f0f3f6; color: var(--link-color); border: 1px solid #e0e5ea; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; } */
 
 /* Reset default p margins inside tiles */
 .post-grid p { margin: 0; padding: 0; }

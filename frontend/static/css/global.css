@@ -23,7 +23,9 @@
     --footer-hover: #ff4500;
     /* gallery */
     --gallery-bg: #FFF8F0;
-
+    --tag-bg: #f0f3f6;
+    --tag-border: #d1d5da;
+    --tag-label: #1a1d25;
 }
 @media (prefers-color-scheme: dark) {
     :root {
@@ -50,8 +52,9 @@
         --footer-hover: #ff4500;
         /* gallery */
         --gallery-bg: #1b2830;
-        --tag-bg: #30363d;
+        --tag-bg: #f0f3f6;
         --tag-border: #444c56;
+        --tag-label: #1a1d25;
     }
 }
 
