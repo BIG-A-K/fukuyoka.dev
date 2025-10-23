@@ -11,7 +11,7 @@ thumbnail = '/photo/salad_bar/IMG_6198.jpeg'
 
 今日は新宿三丁目にある[農家の台所](https://x.com/kf_shinnjyuku?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor)というご飯屋さんに行きました。
 
-![入り口。「美味しい」と会計時に伝えると喜んでもらえます。](/photo/salad_bar/IMG_6198.jpeg)
+![入り口。「おいしかった それが最高の褒め言葉」と書いてある通り、「美味しい」と会計時に伝えると喜んでもらえます。](/photo/salad_bar/IMG_6198.jpeg)
 
 ここはお店の名前から分かる通り、新鮮野菜のサラダバーを提供しています。
 
