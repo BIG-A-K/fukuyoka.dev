@@ -27,7 +27,7 @@
     --tag-border: #d1d5da;
     --tag-label: #1a1d25;
 }
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     :root {
         /* header */
         --header-bg: #1b2830;
@@ -56,7 +56,7 @@
         --tag-border: #444c56;
         --tag-label: #1a1d25;
     }
-}
+} */
 
 html {
     background-size: 224px;
