@@ -1,6 +1,6 @@
 baseURL = 'https://www.fukuyoka.dev/'
 languageCode = 'ja'
-title = '幸者の健康日記'
+title = '幸者のふくよか日記'
 theme = 'fukuyoka'
 
 [Params]
