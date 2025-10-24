@@ -5,7 +5,7 @@ draft = false
 description = ''
 tags = ['肉類']
 categories = ['ふくよか']
-thumbnail = '/photo/Gulliver.jpeg'
+thumbnail = '/photo/gulliver.jpeg'
 +++
 
 皆さんはご存知でしょうか？
@@ -16,7 +16,7 @@ thumbnail = '/photo/Gulliver.jpeg'
 今回はそのガリバーハンバーグを食べてきたのでレビューします。
 私が注文しましたのはチーズが乗せられている**ガリバーWチーズバーグディッシュ**です。
 
-![ガリバーWチーズバーグディッシュ：ご覧ください、溢れんばかりの肉とチーズを！😋](/photo/Gulliver.jpeg)
+![ガリバーWチーズバーグディッシュ：ご覧ください、溢れんばかりの肉とチーズを！😋](/photo/gulliver.jpeg)
 
 私はチーズもハンバーグも大好きです。人類の偉大な発明だと思います。
 そんな素晴らしいものがあふれるほど乗せられています！
