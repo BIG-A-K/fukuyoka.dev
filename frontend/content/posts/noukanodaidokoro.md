@@ -3,7 +3,7 @@ title = '農家の台所'
 date = 2025-10-23T17:26:26+09:00
 draft = false
 description = ''
-tags = ['おすすめ','サラダバー']
+tags = ['おすすめ','サラダ']
 categories = ['すこやか']
 thumbnail = '/photo/salad_bar/IMG_6198.jpeg'
 +++
