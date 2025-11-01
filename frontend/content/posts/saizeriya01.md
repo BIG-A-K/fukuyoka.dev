@@ -27,7 +27,7 @@ thumbnail = '/photo/saizeriya/diavola.jpg'
 
 今日私が選択したのはチキンのサラダ！
 
-![チキンのサラダ。トマトは２つあるが、片方は埋もれていて一見わからない](/photo/saizeriya/chiken_salad.jpg)
+![チキンのサラダ。トマトは２つあるが、片方は埋もれていて一見わからない](/photo/saizeriya/chicken.jpg)
 
 普段は小エビのサラダを選択するところでしたが、今日は鶏肉を食べたかったのでチョイス。
 
