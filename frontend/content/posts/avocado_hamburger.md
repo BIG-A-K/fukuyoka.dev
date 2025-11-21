@@ -35,7 +35,7 @@ thumbnail = '/photo/mosburger/avocado/IMG_6306.jpeg'
 アボカドがとろける。パティは香ばしく焼けていて、レタスとトマトは溢れるばかりに入っています。
 そして旨み溢れるソース。これは自分では再現できないでしょう。
 
-![アボカドバーガー：マジで美味い。](/photo/mosburger/avocado/IMG_6303.jpeg)
+![アボカドバーガー：マジで美味い。](/photo/mosburger/avocado/IMG_6306.jpeg)
 
 
 ダブルアボカドバーガーなるものもあって、次はこちらを頼もうと思いました。
