@@ -3,7 +3,7 @@ title = '生田二郎'
 date = 2025-11-04T14:03:34+09:00
 draft = false
 description = ''
-tags = ['麺類']
+tags = ['おすすめ','麺類']
 categories = ['ふくよか']
 thumbnail = '/photo/ikuta_jiro/IMG_6241.jpeg'
 +++
