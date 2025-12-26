@@ -1,10 +1,9 @@
-use axum::{Json, Router, routing::get};
+use axum::{Json, Router, routing::{get,post}};
 use serde_json::json;
 use std::net::SocketAddr;
 
 #[tokio::main]
 async fn main() {
-    // ルーター定義：GET / で "Hello, world" を返す
     let app = Router::new()
         .route("/", get(root))
         .route("/health", get(health_check))
