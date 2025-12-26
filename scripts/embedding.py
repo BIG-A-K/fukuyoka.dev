@@ -168,7 +168,7 @@ def main():
         }
 
         posts_with_embeddings = create_embeddings([post])
-        output_path = Path(filepath).parent / f"{post['filename']}_embedding.json"
+        output_path = f"{post['filename']}_embedding.json"
         save_embeddings(posts_with_embeddings, str(output_path))
     else:
         print("Please provide either --src for single file or -all to process all posts.")
