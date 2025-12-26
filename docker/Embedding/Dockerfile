@@ -87,23 +87,15 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         git \
         tmux \
         build-essential \
-        zsh \
         sudo \
         wget \
         curl 
 
 RUN deluser ubuntu
 
-# install neovim
-RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
-    rm -rf /opt/nvim-linux-x86_64 && \
-    tar xzf nvim-linux-x86_64.tar.gz -C /opt && \
-    rm nvim-linux-x86_64.tar.gz && \
-    ln -s /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
-    
 RUN addgroup --gid ${GID} ${GROUP} 
 
-RUN useradd -ms /bin/zsh -u ${UID} -g ${GID} -G sudo ${USER} &&\
+RUN useradd -ms /bin/bash -u ${UID} -g ${GID} -G sudo ${USER} &&\
     echo ${USER}:${USER} | chpasswd 
 
 USER ${USER}

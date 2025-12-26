@@ -42,4 +42,7 @@ clean:
 
 embedding:
 	$(COMPOSE_EMBEDDING) build
-	$(COMPOSE_EMBEDDING) run --rm embedding /bin/zsh
+	$(COMPOSE_EMBEDDING) run --rm embedding /bin/bash
+
+embedding-down:
+	$(COMPOSE_EMBEDDING) down
