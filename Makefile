@@ -1,7 +1,8 @@
 COMPOSE ?= docker compose --env-file .env -f docker/compose.yml
+COMPOSE_EMBEDDING ?= docker compose --env-file .env -f docker/compose.embedding.yml
 SERVICE ?= fukuyoka_app
 
-.PHONY: build up down logs bash parquet api test clean
+.PHONY: build up down logs bash parquet api test clean embedding
 
 help:
 	@echo "Makefile commands:"
@@ -13,6 +14,7 @@ help:
 	@echo "  ps         - List running containers"
 	@echo "  hugo       - Build the frontend with Hugo"
 	@echo "  clean      - Remove containers, networks, and volumes"
+	@echo "  embedding  - Build and access the embedding container"
 
 build:
 	$(COMPOSE) build
@@ -37,3 +39,7 @@ hugo:
 
 clean:
 	$(COMPOSE) down -v --remove-orphans
+
+embedding:
+	$(COMPOSE_EMBEDDING) build
+	$(COMPOSE_EMBEDDING) run --rm embedding /bin/zsh
