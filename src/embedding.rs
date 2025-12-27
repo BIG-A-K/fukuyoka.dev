@@ -16,7 +16,7 @@ async fn embedding_post(Json(payload): Json<serde_json::Value>) -> Json<serde_js
         return Json(json!({ "error": "text field is required" }));
     }
     let embedding_vector = embedding(text);
-    println!("Generated embedding for text: {}", text);
+    println!("Generated embedding for text: {text}");
     Json(json!({ "embedding": embedding_vector }))
 }
 
@@ -46,7 +46,7 @@ impl EmbeddingModel {
           
         // トークナイザーの読み込み  
         let tokenizer = Tokenizer::from_file(tokenizer_file)  
-            .map_err(|e| format!("Failed to load tokenizer: {}", e))?;
+            .map_err(|e| format!("Failed to load tokenizer: {e}"))?;
           
         Ok(Self { model, tokenizer, device })  
     }  
@@ -54,7 +54,7 @@ impl EmbeddingModel {
     pub fn embed(&self, text: &str) -> Result<Vec<f32>, Box<dyn std::error::Error>> {  
         // テキストをトークン化  
         let tokens = self.tokenizer.encode(text, true)  
-            .map_err(|e| format!("Failed to tokenize: {}", e))?;
+            .map_err(|e| format!("Failed to tokenize: {e}"))?;
           
         let token_ids = Tensor::new(tokens.get_ids(), &self.device)?;
         let attention_mask = Tensor::new(tokens.get_attention_mask(), &self.device)?;
