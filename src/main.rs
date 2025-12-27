@@ -1,4 +1,7 @@
-use axum::{Json, Router, routing::{get,post}};
+use axum::{
+    Json, Router,
+    routing::{get, post},
+};
 use serde_json::json;
 include!("embedding.rs");
 
