@@ -1,7 +1,7 @@
 use candle_core::{DType, Device, Tensor};
 use candle_nn::VarBuilder;
 use candle_transformers::models::bert::{BertModel, Config};
-use hf_hub::api::sync::Api;
+use hf_hub::api::sync::ApiBuilder;
 use tokenizers::Tokenizer;
   
 
@@ -31,8 +31,10 @@ impl EmbeddingModel {
     pub fn new(model_id: &str) -> Result<Self, Box<dyn std::error::Error>> {  
         let device = Device::Cpu;
           
-        // Hugging Face Hubからモデルをダウンロード  
-        let api = Api::new()?;
+        // Hugging Face Hubからモデルをダウンロード
+        let api = ApiBuilder::new()
+            .with_progress(true)
+            .build()?;
         let repo = api.model(model_id.to_string());
         let model_file = repo.get("model.safetensors")?;
         let config_file = repo.get("config.json")?;
