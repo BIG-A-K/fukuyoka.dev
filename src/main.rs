@@ -22,17 +22,17 @@ async fn main() {
 }
 
 async fn root() -> &'static str {
+    println!("Root endpoint accessed");
     "Hello, I am Fukuyoka"
 }
 
 async fn health_check() -> Json<serde_json::Value> {
+    println!("Health check OK");
     Json(json!({ "status": "ok" }))
 }
 
 async fn fallback() -> &'static str {
+    println!("Fallback endpoint accessed");
     "API : 404 Not Found"
 }
 
-async fn example_post(Json(payload): Json<serde_json::Value>) -> Json<serde_json::Value> {
-    Json(payload)
-}

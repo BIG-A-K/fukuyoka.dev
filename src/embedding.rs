@@ -73,14 +73,13 @@ impl EmbeddingModel {
         let (_batch_size, seq_len, _hidden_size) = embeddings.dims3()?;
         let pooled = (embeddings.sum(1)? * (1.0 / seq_len as f64))?;
           
-        // 正規化（オプション）
+        // 正規化
         let normalized = pooled.broadcast_div(&pooled.sqr()?.sum_keepdim(1)?.sqrt()?)?;
 
         Ok(normalized.squeeze(0)?.to_vec1()?)
     }  
 }  
   
-// 使用例  
 fn embedding(text: &str) -> Vec<f32> {
     let model = EmbeddingModel::new("intfloat/multilingual-e5-base").unwrap();
     model.embed(text).unwrap()  
