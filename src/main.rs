@@ -21,7 +21,7 @@ async fn main() {
         .route("/search", post(search_post))
         // .route("/upload", post(admin::upload_images))
         // .route("/sync", post(admin::sync_r2))
-        .route("/images", get(admin::list_images))
+        // .route("/images", get(admin::list_images))
         .layer(DefaultBodyLimit::max(50 * 1024 * 1024))
         .fallback(fallback);
 

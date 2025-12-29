@@ -8,50 +8,26 @@ use tokio::process::Command;
 pub const UPLOAD_DIR: &str = "/tmp/data";
 
 pub async fn upload_images(mut multipart: Multipart) -> Json<serde_json::Value> {
+    // 画像をlocalに一時保存する処理
     println!("Upload endpoint accessed");
-    let mut uploaded_count = 0;
-    let mut errors: Vec<String> = Vec::new();
+    while let Some(field) = multipart.next_field().await.unwrap() {
+        let file_name = field.file_name().unwrap_or("unknown").to_string();
+        let data = field.bytes().await.unwrap();
 
-    while let Ok(Some(field)) = multipart.next_field().await {
-        let filename = match field.file_name() {
-            Some(name) => name.to_string(),
-            None => continue,
-        };
-
-        let ext = Path::new(&filename)
-            .extension()
-            .and_then(|e| e.to_str())
-            .unwrap_or("")
-            .to_lowercase();
-
-        if !["jpg", "jpeg", "png"].contains(&ext.as_str()) {
-            errors.push(format!("{}: unsupported format", filename));
-            continue;
-        }
-
-        let data = match field.bytes().await {
-            Ok(bytes) => bytes,
-            Err(e) => {
-                errors.push(format!("{}: {}", filename, e));
-                continue;
+        let file_path = format!("{}/{}", UPLOAD_DIR, file_name);
+        match fs::write(&file_path, &data).await {
+            Ok(_) => {
+                println!("Saved file: {}", file_path);
+                return Json(json!({ "status": "ok", "message": "ファイルが正常にアップロードされました" }));
             }
-        };
-
-        let filepath = format!("{}/{}", UPLOAD_DIR, filename);
-        if let Err(e) = fs::write(&filepath, &data).await {
-            errors.push(format!("{}: {}", filename, e));
-            continue;
+            Err(e) => {
+                println!("Failed to save file {}: {}", file_path, e);
+                return Json(json!({ "status": "error", "error": format!("ファイルの保存に失敗しました: {}", e) }));
+            }
         }
-
-        println!("Uploaded: {}", filename);
-        uploaded_count += 1;
     }
 
-    if errors.is_empty() {
-        Json(json!({ "status": "ok", "uploaded": uploaded_count }))
-    } else {
-        Json(json!({ "status": "partial", "uploaded": uploaded_count, "errors": errors }))
-    }
+    Json(json!({ "status": "error", "error": "ファイルが見つかりませんでした" }))
 }
 
 pub async fn sync_r2() -> Json<serde_json::Value> {

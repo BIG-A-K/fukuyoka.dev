@@ -9,6 +9,7 @@ help:
 	@echo "  build      - Build the Docker images"
 	@echo "  up         - Start the Docker containers"
 	@echo "  down       - Stop the Docker containers"
+	@echo "  restart-*  - Restart a container (e.g., make restart-fukuyoka_app)"
 	@echo "  in         - Access the app container shell"
 	@echo "  logs       - View logs of the app container"
 	@echo "  ps         - List running containers"
@@ -24,6 +25,9 @@ up:
 
 down:
 	$(COMPOSE) down
+
+restart-%:
+	$(COMPOSE) restart $*
 
 in:
 	$(COMPOSE) exec $(SERVICE) bash
