@@ -36,6 +36,7 @@ The application runs as a multi-container Docker setup orchestrated by docker-co
    - Uses TUNNEL_TOKEN from `.env` file
 
 ### Nginx Routing Logic
+- `/akasha/*` → proxies to Hugo frontend with Basic Auth (admin panel)
 - `/api/*` → proxies to `fukuyoka_app:80` (Rust backend)
 - `/photo/*.{png,jpeg,jpg}` → proxies to `https://photo.fukuyoka.dev` (R2 bucket)
 - `/*` → proxies to `fukuyoka_frontend:1313` (Hugo frontend)
@@ -89,6 +90,9 @@ cargo run --release
 # The backend runs on port 80 and provides:
 # GET / - Returns "Hello, I am Fukuyoka"
 # GET /health - Returns {"status": "ok"}
+# POST /upload - Image upload (multipart/form-data)
+# POST /sync - Sync images to R2 using AWS CLI
+# GET /images - List uploaded images
 ```
 
 ## Environment Setup
@@ -96,6 +100,10 @@ cargo run --release
 Required `.env` file at repository root must contain:
 - `DOMAIN` - Your domain name for Hugo baseURL
 - `TUNNEL_TOKEN` - Cloudflare Tunnel authentication token
+- `R2_ENDPOINT` - Cloudflare R2 endpoint URL (e.g., `https://<account_id>.r2.cloudflarestorage.com`)
+- `R2_BUCKET` - R2 bucket name (default: `fukuyoka-photo`)
+- `AWS_ACCESS_KEY_ID` - R2 access key for AWS CLI
+- `AWS_SECRET_ACCESS_KEY` - R2 secret key for AWS CLI
 
 ## Development Notes
 
@@ -114,3 +122,13 @@ Required `.env` file at repository root must contain:
 - Theme files in `frontend/themes/fukuyoka/`
 - Layouts use partial templates (head, header, footer)
 - Custom image rendering with modal support (`frontend/static/js/image-modal.js`)
+
+### Admin Panel (Akasha)
+- Access at `/akasha/` with Basic Auth
+- Static files in `frontend/static/akasha/`
+- Features:
+  - Image upload to `/tmp/data`
+  - R2 sync button (uses AWS CLI `s3 sync`)
+  - View uploaded images
+- Basic Auth credentials configured in `nginx/.htpasswd`
+- Generate password: `htpasswd -nb admin yourpassword > nginx/.htpasswd`

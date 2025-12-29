@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akasha - 管理画面</title>
+  <link rel="stylesheet" href="/akasha/css/admin.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Akasha 管理画面</h1>
+      <a href="/" class="back-link">サイトに戻る</a>
+    </header>
+
+    <main>
+      <section class="upload-section">
+        <h2>画像アップロード</h2>
+        <form id="upload-form">
+          <div class="file-input-wrapper">
+            <input type="file" id="file-input" name="files" multiple accept="image/*">
+            <label for="file-input">ファイルを選択</label>
+          </div>
+          <div id="file-preview" class="file-preview"></div>
+          <button type="submit" id="upload-btn" disabled>アップロード</button>
+        </form>
+        <div id="upload-status" class="status"></div>
+      </section>
+
+      <section class="sync-section">
+        <h2>R2 同期</h2>
+        <p>ローカルの画像をCloudflare R2と同期します。</p>
+        <button id="sync-btn">R2に同期</button>
+        <div id="sync-status" class="status"></div>
+      </section>
+
+      <section class="images-section">
+        <h2>アップロード済み画像</h2>
+        <button id="refresh-btn">更新</button>
+        <div id="images-list" class="images-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/akasha/js/admin.js"></script>
+</body>
+</html>
