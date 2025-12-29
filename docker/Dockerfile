@@ -20,10 +20,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     unzip
 
 # install awscli
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && \
-    ./aws/install && \
-    rm -rf awscliv2.zip aws
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf awscliv2.zip aws
 
 
 FROM rust:latest
@@ -32,7 +32,7 @@ LABEL maintainer="yukijya"
 ENV TZ=Asia/Tokyo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY --from=installer /usr/bin/aws /usr/bin/aws
+COPY --from=installer /usr/local/aws-cli/ /usr/local/aws-cli/
 
 USER root
 
