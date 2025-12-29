@@ -1,14 +1,15 @@
 mod admin;
 
 use axum::{
-    Json, Router,
-    routing::{get, post},
     extract::DefaultBodyLimit,
+    http::Uri,
+    routing::{get, post},
+    Json, Router,
 };
 use serde_json::json;
 use tokio::fs;
 
-include!("embedding.rs");
+use rust_app::embedding::EmbeddingModel;
 
 #[tokio::main]
 async fn main() {
@@ -19,9 +20,11 @@ async fn main() {
         .route("/health", get(health_check))
         .route("/embedding", post(embedding_post))
         .route("/search", post(search_post))
-        // .route("/upload", post(admin::upload_images))
-        // .route("/sync", post(admin::sync_r2))
-        // .route("/images", get(admin::list_images))
+        .route("/upload", post(admin::upload_images))
+        .route("/push", post(admin::push_storage))
+        .route("/images", get(admin::list_images))
+        .route("/local-image/{filename}", get(admin::serve_local_image))
+        .route("/diff", get(admin::diff_images))
         .layer(DefaultBodyLimit::max(50 * 1024 * 1024))
         .fallback(fallback);
 
@@ -43,6 +46,24 @@ async fn health_check() -> Json<serde_json::Value> {
     Json(json!({ "status": "ok" }))
 }
 
+async fn embedding_post(Json(payload): Json<serde_json::Value>) -> Json<serde_json::Value> {
+    let text = payload["text"].as_str().unwrap_or("");
+    if text.is_empty() {
+        return Json(json!({ "error": "text field is required" }));
+    }
+
+    match EmbeddingModel::new("intfloat/multilingual-e5-base") {
+        Ok(model) => match model.embed(text) {
+            Ok(embedding) => {
+                println!("Generated embedding for text: {text}");
+                Json(json!({ "embedding": embedding }))
+            }
+            Err(e) => Json(json!({ "error": format!("Failed to embed: {e}") })),
+        },
+        Err(e) => Json(json!({ "error": format!("Failed to load model: {e}") })),
+    }
+}
+
 async fn search_post(Json(payload): Json<serde_json::Value>) -> Json<serde_json::Value> {
     let text = payload["text"].as_str().unwrap_or("");
     if text.is_empty() {
@@ -55,7 +76,7 @@ async fn search_post(Json(payload): Json<serde_json::Value>) -> Json<serde_json:
     Json(json!({ "results": results }))
 }
 
-async fn fallback() -> &'static str {
-    println!("Fallback endpoint accessed");
-    "API : 404 Not Found"
+async fn fallback(uri: Uri) -> String {
+    println!("Fallback endpoint accessed: {uri}");
+    format!("API : 404 Not Found - {uri}")
 }

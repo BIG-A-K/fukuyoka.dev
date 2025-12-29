@@ -29,7 +29,13 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 FROM rust:latest
 LABEL maintainer="yukijya"
 
+ARG UID
+ARG USER
+ARG GROUP
+ARG GID
+
 ENV TZ=Asia/Tokyo
+ENV PATH="/usr/local/aws-cli/v2/current/bin:${PATH}"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY --from=installer /usr/local/aws-cli/ /usr/local/aws-cli/
@@ -41,7 +47,16 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean \
     && echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache \
     && apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends ca-certificates curl pkg-config libssl-dev \
+    && apt-get install -y --no-install-recommends ca-certificates curl pkg-config libssl-dev sudo libimage-exiftool-perl \
     && rm -rf /var/lib/apt/lists/*
+
+# Create user with specified UID/GID
+RUN addgroup --gid ${GID} ${GROUP} \
+    && useradd -ms /bin/bash -u ${UID} -g ${GID} -G sudo ${USER} \
+    && echo "${USER}:${USER}" | chpasswd \
+    && chown -R ${USER}:${GROUP} /usr/local/cargo
+
+USER ${USER}
+WORKDIR /home/${USER}
 
 CMD ["bash"]

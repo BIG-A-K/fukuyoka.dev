@@ -2,36 +2,17 @@ use candle_core::{DType, Device, Tensor};
 use candle_nn::VarBuilder;
 use candle_transformers::models::bert::{BertModel, Config};
 use hf_hub::api::sync::ApiBuilder;
-use tokenizers::Tokenizer;
-  
+use tokenizers::{Tokenizer, TruncationParams};
 
-async fn embedding_post(Json(payload): Json<serde_json::Value>) -> Json<serde_json::Value> {
-    /* Expecting JSON payload like:
-       {
-           "text": "Your input text here"
-       }
-    */
-    let text = payload["text"].as_str().unwrap_or("");
-    if text.is_empty() {
-        return Json(json!({ "error": "text field is required" }));
-    }
-    let embedding_vector = embedding(text);
-    println!("Generated embedding for text: {text}");
-    Json(json!({ "embedding": embedding_vector }))
+pub struct EmbeddingModel {
+    model: BertModel,
+    tokenizer: Tokenizer,
+    device: Device,
 }
 
-
-pub struct EmbeddingModel {  
-    model: BertModel,  
-    tokenizer: Tokenizer,  
-    device: Device,  
-}  
-  
-impl EmbeddingModel {  
-    pub fn new(model_id: &str) -> Result<Self, Box<dyn std::error::Error>> {  
+impl EmbeddingModel {
+    pub fn new(model_id: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let device = Device::Cpu;
-          
-        // Hugging Face Hubからモデルをダウンロード
         let api = ApiBuilder::new()
             .with_progress(true)
             .build()?;
@@ -46,14 +27,20 @@ impl EmbeddingModel {
         let vb = VarBuilder::from_tensors(tensors, DType::F32, &device);
         let model = BertModel::load(vb, &config)?;
           
-        // トークナイザーの読み込み  
-        let tokenizer = Tokenizer::from_file(tokenizer_file)  
+        // トークナイザーの読み込み（510トークンで切り詰め、[CLS]と[SEP]で+2）
+        let mut tokenizer = Tokenizer::from_file(tokenizer_file)
             .map_err(|e| format!("Failed to load tokenizer: {e}"))?;
+        tokenizer
+            .with_truncation(Some(TruncationParams {
+                max_length: 510,
+                ..Default::default()
+            }))
+            .map_err(|e| format!("Failed to set truncation: {e}"))?;
           
         Ok(Self { model, tokenizer, device })  
-    }  
-      
-    pub fn embed(&self, text: &str) -> Result<Vec<f32>, Box<dyn std::error::Error>> {  
+    }
+
+    pub fn embed(&self, text: &str) -> Result<Vec<f32>, Box<dyn std::error::Error>> {
         // テキストをトークン化  
         let tokens = self.tokenizer.encode(text, true)  
             .map_err(|e| format!("Failed to tokenize: {e}"))?;
@@ -77,10 +64,6 @@ impl EmbeddingModel {
         let normalized = pooled.broadcast_div(&pooled.sqr()?.sum_keepdim(1)?.sqrt()?)?;
 
         Ok(normalized.squeeze(0)?.to_vec1()?)
-    }  
-}  
-  
-fn embedding(text: &str) -> Vec<f32> {
-    let model = EmbeddingModel::new("intfloat/multilingual-e5-base").unwrap();
-    model.embed(text).unwrap()  
+    }
 }
+

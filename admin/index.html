@@ -27,14 +27,31 @@
         <div id="upload-status" class="status"></div>
       </section>
 
+      <section class="diff-section">
+        <h2>差分確認</h2>
+        <button id="diff-btn">差分を確認</button>
+        <div id="diff-status" class="status"></div>
+        <div id="diff-result" class="diff-result">
+          <div class="diff-group">
+            <h3>ローカルのみ(未同期)</h3>
+            <div id="only-local" class="diff-list"></div>
+          </div>
+          <div class="diff-group">
+            <h3>同期済み</h3>
+            <div id="synced" class="diff-list"></div>
+          </div>
+        </div>
+      </section>
+
       <section class="sync-section">
-        <h2>R2 同期</h2>
-        <p>ローカルの画像をCloudflare R2と同期します。</p>
-        <button id="sync-btn">R2に同期</button>
+        <h2>ストレージ同期</h2>
+        <p>ローカルの画像をクラウドストレージにアップロードします。</p>
+        <button id="push-btn">ストレージにアップロード</button>
         <div id="sync-status" class="status"></div>
       </section>
+
       <section class="images-section">
-        <h2>アップロード済み画像</h2>
+        <h2>ローカル画像一覧</h2>
         <button id="refresh-btn">更新</button>
         <div id="images-list" class="images-grid"></div>
       </section>
