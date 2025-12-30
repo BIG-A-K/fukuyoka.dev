@@ -12,7 +12,7 @@ pub const UPLOAD_DIR: &str = "/tmp/data";
 
 pub async fn upload_images(mut multipart: Multipart) -> Json<serde_json::Value> {
     // 画像をlocalに一時保存する処理
-    println!("Upload endpoint accessed");
+    println!("ADMIN : Upload endpoint accessed");
     let mut uploaded_count = 0;
     let mut errors: Vec<String> = Vec::new();
 
@@ -58,7 +58,7 @@ pub async fn upload_images(mut multipart: Multipart) -> Json<serde_json::Value> 
 
 /// ローカルからR2にアップロード
 pub async fn push_storage() -> Json<serde_json::Value> {
-    println!("Push to storage endpoint accessed");
+    println!("ADMIN : Push to storage endpoint accessed");
 
     let endpoint = std::env::var("R2_ENDPOINT").unwrap_or_default();
     let bucket = std::env::var("R2_BUCKET").unwrap_or_else(|_| "fukuyoka-photo".to_string());
@@ -124,7 +124,7 @@ pub async fn push_storage() -> Json<serde_json::Value> {
 }
 
 pub async fn list_images() -> Json<serde_json::Value> {
-    println!("List images endpoint accessed");
+    println!("ADMIN : List images endpoint accessed");
 
     let mut images: Vec<String> = Vec::new();
 
@@ -186,7 +186,7 @@ pub async fn serve_local_image(
 
 /// R2とローカルの差分を取得
 pub async fn diff_images() -> Json<serde_json::Value> {
-    println!("Diff images endpoint accessed");
+    println!("ADMIN : Diff images endpoint accessed");
 
     let endpoint = std::env::var("R2_ENDPOINT").unwrap_or_default();
     let bucket = std::env::var("R2_BUCKET").unwrap_or_else(|_| "fukuyoka-photo".to_string());

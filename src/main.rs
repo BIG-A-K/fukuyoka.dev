@@ -15,16 +15,20 @@ use rust_app::embedding::EmbeddingModel;
 async fn main() {
     let _ = fs::create_dir_all(admin::UPLOAD_DIR).await;
 
+    // Admin routes (protected by nginx Basic Auth at /api/akasha/*)
+    let admin_routes = Router::new()
+        .route("/upload", post(admin::upload_images))
+        .route("/push", post(admin::push_storage))
+        .route("/images", get(admin::list_images))
+        .route("/local-image/{filename}", get(admin::serve_local_image))
+        .route("/diff", get(admin::diff_images));
+        
     let app = Router::new()
         .route("/", get(root))
         .route("/health", get(health_check))
         .route("/embedding", post(embedding_post))
         .route("/search", post(search_post))
-        .route("/upload", post(admin::upload_images))
-        .route("/push", post(admin::push_storage))
-        .route("/images", get(admin::list_images))
-        .route("/local-image/{filename}", get(admin::serve_local_image))
-        .route("/diff", get(admin::diff_images))
+        .nest("/akasha", admin_routes)
         .layer(DefaultBodyLimit::max(50 * 1024 * 1024))
         .fallback(fallback);
 

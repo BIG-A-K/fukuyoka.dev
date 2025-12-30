@@ -55,9 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     try {
-      const response = await fetch('/api/upload', {
+      const response = await fetch('/api/akasha/upload', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'include'
       });
 
       const result = await response.json();
@@ -83,8 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
     showStatus(syncStatus, 'loading', 'R2にアップロード中...');
 
     try {
-      const response = await fetch('/api/push', {
-        method: 'POST'
+      const response = await fetch('/api/akasha/push', {
+        method: 'POST',
+        credentials: 'include'
       });
 
       const result = await response.json();
@@ -107,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
     showStatus(diffStatus, 'loading', '差分を確認中...');
 
     try {
-      const response = await fetch('/api/diff');
+      const response = await fetch('/api/akasha/diff', { credentials: 'include' });
       const result = await response.json();
 
       if (result.status === 'ok') {
@@ -132,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function loadImages() {
     try {
-      const response = await fetch('/api/images');
+      const response = await fetch('/api/akasha/images', { credentials: 'include' });
       const result = await response.json();
 
       if (response.ok && result.images) {
@@ -153,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     imagesList.innerHTML = images.map(img => `
       <div class="image-item">
-        <img src="/api/local-image/${encodeURIComponent(img)}" alt="${img}" loading="lazy">
+        <img src="/api/akasha/local-image/${encodeURIComponent(img)}" alt="${img}" loading="lazy">
         <span class="image-name">${img}</span>
       </div>
     `).join('');
@@ -174,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (type === 'r2') {
         return `/photo/${encodeURIComponent(filename)}`;
       }
-      return `/api/local-image/${encodeURIComponent(filename)}`;
+      return `/api/akasha/local-image/${encodeURIComponent(filename)}`;
     };
 
     element.innerHTML = files.map(filename => `
