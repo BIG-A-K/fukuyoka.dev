@@ -10,11 +10,11 @@ use rust_app::post::{load_post, load_posts, Post};
 #[command(about = "Create embeddings for fukuyoka blog posts")]
 struct Args {
     /// Process a single markdown file
-    #[arg(long)]
+    #[arg(short,long)]
     src: Option<PathBuf>,
 
     /// Process all posts in the posts directory
-    #[arg(long)]
+    #[arg(short,long)]
     all: bool,
 
     /// Output file path (default: <src-filename>.json or embeddings.json for --all)
@@ -22,7 +22,7 @@ struct Args {
     output: Option<PathBuf>,
 
     /// Posts directory (default: frontend/content/posts)
-    #[arg(long, default_value = "frontend/content/posts")]
+    #[arg(short,long, default_value = "frontend/content/posts")]
     posts_dir: PathBuf,
 }
 
