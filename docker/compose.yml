@@ -47,6 +47,7 @@ services:
       - "51841:80"
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ../nginx/teapot.html:/etc/nginx/html/teapot.html:ro
       - ../.htpasswd:/etc/nginx/.htpasswd:ro
       - ../admin:/var/www/admin:ro
     healthcheck:
