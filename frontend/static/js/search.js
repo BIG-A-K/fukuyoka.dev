@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function displayResults(results) {
     console.log('Displaying results:', results);
     searchResults.innerHTML = results.map(result => {
-      const url = result.url || '#';
+      const url = result.url.toLowerCase() || '#';
       const thumbnail = result.thumbnail || '/favicon.png';
       return `
       <li>
