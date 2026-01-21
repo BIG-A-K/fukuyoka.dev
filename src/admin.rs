@@ -1,7 +1,7 @@
+use axum::Json;
 use axum::body::Body;
 use axum::extract::Path as AxumPath;
-use axum::http::{header, Response, StatusCode};
-use axum::Json;
+use axum::http::{Response, StatusCode, header};
 use axum_extra::extract::Multipart;
 use serde_json::json;
 use std::path::Path;
@@ -50,7 +50,9 @@ pub async fn upload_images(mut multipart: Multipart) -> Json<serde_json::Value> 
             "message": format!("{}件のファイルをアップロードしました", uploaded_count)
         }))
     } else if !errors.is_empty() {
-        Json(json!({ "status": "error", "error": format!("アップロード失敗: {}", errors.join(", ")) }))
+        Json(
+            json!({ "status": "error", "error": format!("アップロード失敗: {}", errors.join(", ")) }),
+        )
     } else {
         Json(json!({ "status": "error", "error": "ファイルが見つかりませんでした" }))
     }
@@ -72,8 +74,10 @@ pub async fn push_storage() -> Json<serde_json::Value> {
         .args([
             "-overwrite_original",
             "-all=",
-            "-ext", "jpg",
-            "-ext", "jpeg",
+            "-ext",
+            "jpg",
+            "-ext",
+            "jpeg",
             UPLOAD_DIR,
         ])
         .output()
@@ -88,7 +92,9 @@ pub async fn push_storage() -> Json<serde_json::Value> {
         Err(e) => {
             println!("exiftool warning: {}", e);
             // exiftoolが失敗したらアップロードは中止
-            return Json(json!({ "status": "error", "error": format!("exiftoolの実行に失敗しました: {}", e) }) );
+            return Json(
+                json!({ "status": "error", "error": format!("exiftoolの実行に失敗しました: {}", e) }),
+            );
         }
     }
 
@@ -113,12 +119,16 @@ pub async fn push_storage() -> Json<serde_json::Value> {
             } else {
                 let stderr = String::from_utf8_lossy(&result.stderr);
                 println!("Push failed: {}", stderr);
-                Json(json!({ "status": "error", "error": format!("アップロードに失敗しました: {}", stderr) }))
+                Json(
+                    json!({ "status": "error", "error": format!("アップロードに失敗しました: {}", stderr) }),
+                )
             }
         }
         Err(e) => {
             println!("Push command failed: {}", e);
-            Json(json!({ "status": "error", "error": format!("AWS CLIの実行に失敗しました: {}", e) }))
+            Json(
+                json!({ "status": "error", "error": format!("AWS CLIの実行に失敗しました: {}", e) }),
+            )
         }
     }
 }
@@ -146,7 +156,9 @@ pub async fn list_images() -> Json<serde_json::Value> {
         }
         Err(e) => {
             println!("Failed to read directory: {}", e);
-            return Json(json!({ "status": "error", "error": format!("ディレクトリの読み込みに失敗しました: {}", e) }));
+            return Json(
+                json!({ "status": "error", "error": format!("ディレクトリの読み込みに失敗しました: {}", e) }),
+            );
         }
     }
 
@@ -164,7 +176,9 @@ pub async fn serve_local_image(
     }
 
     let file_path = format!("{}/{}", UPLOAD_DIR, filename);
-    let data = fs::read(&file_path).await.map_err(|_| StatusCode::NOT_FOUND)?;
+    let data = fs::read(&file_path)
+        .await
+        .map_err(|_| StatusCode::NOT_FOUND)?;
 
     let content_type = match Path::new(&filename)
         .extension()
@@ -246,7 +260,9 @@ pub async fn diff_images() -> Json<serde_json::Value> {
                 }
             } else {
                 let stderr = String::from_utf8_lossy(&result.stderr);
-                return Json(json!({ "status": "error", "error": format!("R2一覧取得失敗: {}", stderr) }));
+                return Json(
+                    json!({ "status": "error", "error": format!("R2一覧取得失敗: {}", stderr) }),
+                );
             }
         }
         Err(e) => {

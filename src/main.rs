@@ -1,10 +1,10 @@
 mod admin;
 
 use axum::{
+    Json, Router,
     extract::DefaultBodyLimit,
     http::Uri,
     routing::{get, post},
-    Json, Router,
 };
 use serde_json::json;
 use tokio::fs;
@@ -22,7 +22,7 @@ async fn main() {
         .route("/images", get(admin::list_images))
         .route("/local-image/{filename}", get(admin::serve_local_image))
         .route("/diff", get(admin::diff_images));
-        
+
     let app = Router::new()
         .route("/", get(root))
         .route("/health", get(health_check))
@@ -74,8 +74,8 @@ async fn search_post(Json(payload): Json<serde_json::Value>) -> Json<serde_json:
         return Json(json!({ "error": "text field is required" }));
     }
     let results = vec![
-        json!({ "title": "幸楽苑　担々麺", "URL": "/posts/kourakuen/" }),
-        json!({ "title": "幸楽苑", "URL": "/posts/kourakuen2/" }),
+        json!({ "title": "幸楽苑　担々麺", "URL": "/posts/kourakuen/", "thumbnail": "/photo/20251005/IMG_6187.jpeg" }),
+        json!({ "title": "幸楽苑", "URL": "/posts/kourakuen2/", "thumbnail": "/photo/20251005/IMG_6187.jpeg" }),
     ];
     Json(json!({ "results": results }))
 }

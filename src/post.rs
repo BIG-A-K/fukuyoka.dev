@@ -9,6 +9,7 @@ pub struct Post {
     pub filepath: String,
     pub title: String,
     pub date: String,
+    pub thumbnail: Option<String>,
     pub tags: Vec<String>,
     pub categories: Vec<String>,
     pub body: String,
@@ -22,7 +23,9 @@ impl Post {
 }
 
 /// Parse TOML frontmatter from markdown content
-pub fn parse_frontmatter(content: &str) -> (HashMap<String, String>, Vec<String>, Vec<String>, String) {
+pub fn parse_frontmatter(
+    content: &str,
+) -> (HashMap<String, String>, Vec<String>, Vec<String>, String) {
     let pattern = Regex::new(r"(?s)^\+\+\+\n(.*?)\n\+\+\+\n(.*)$").unwrap();
 
     let Some(caps) = pattern.captures(content) else {
@@ -102,6 +105,7 @@ pub fn load_post(filepath: &Path) -> Option<Post> {
         filepath: filepath.to_string_lossy().to_string(),
         title: metadata.get("title").cloned().unwrap_or_default(),
         date: metadata.get("date").cloned().unwrap_or_default(),
+        thumbnail: metadata.get("thumbnail").cloned(),
         tags,
         categories,
         body: clean_body,

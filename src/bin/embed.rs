@@ -3,18 +3,18 @@ use serde::Serialize;
 use std::path::PathBuf;
 
 use rust_app::embedding::EmbeddingModel;
-use rust_app::post::{load_post, load_posts, Post};
+use rust_app::post::{Post, load_post, load_posts};
 
 #[derive(Parser, Debug)]
 #[command(name = "embed")]
 #[command(about = "Create embeddings for fukuyoka blog posts")]
 struct Args {
     /// Process a single markdown file
-    #[arg(short,long)]
+    #[arg(short, long)]
     src: Option<PathBuf>,
 
     /// Process all posts in the posts directory
-    #[arg(short,long)]
+    #[arg(short, long)]
     all: bool,
 
     /// Output file path (default: <src-filename>.json or embeddings.json for --all)
@@ -22,7 +22,7 @@ struct Args {
     output: Option<PathBuf>,
 
     /// Posts directory (default: frontend/content/posts)
-    #[arg(short,long, default_value = "frontend/content/posts")]
+    #[arg(short, long, default_value = "frontend/content/posts")]
     posts_dir: PathBuf,
 }
 
@@ -32,6 +32,7 @@ struct PostWithEmbedding {
     filepath: String,
     title: String,
     date: String,
+    thumbnail: Option<String>,
     tags: Vec<String>,
     categories: Vec<String>,
     body: String,
@@ -39,28 +40,32 @@ struct PostWithEmbedding {
 }
 
 fn create_embeddings(posts: Vec<Post>, model: &EmbeddingModel) -> Vec<PostWithEmbedding> {
-    posts.into_iter().filter_map(|post| {
-        let text = post.text_for_embedding();
-        match model.embed(&text) {
-            Ok(embedding) => {
-                println!("  Embedded: {} ({})", post.title, post.filename);
-                Some(PostWithEmbedding {
-                    filename: post.filename,
-                    filepath: post.filepath,
-                    title: post.title,
-                    date: post.date,
-                    tags: post.tags,
-                    categories: post.categories,
-                    body: post.body,
-                    embedding,
-                })
+    posts
+        .into_iter()
+        .filter_map(|post| {
+            let text = post.text_for_embedding();
+            match model.embed(&text) {
+                Ok(embedding) => {
+                    println!("  Embedded: {} ({})", post.title, post.filename);
+                    Some(PostWithEmbedding {
+                        filename: post.filename,
+                        filepath: post.filepath,
+                        title: post.title,
+                        date: post.date,
+                        thumbnail: post.thumbnail,
+                        tags: post.tags,
+                        categories: post.categories,
+                        body: post.body,
+                        embedding,
+                    })
+                }
+                Err(e) => {
+                    eprintln!("  Failed to embed {}: {}", post.filename, e);
+                    None
+                }
             }
-            Err(e) => {
-                eprintln!("  Failed to embed {}: {}", post.filename, e);
-                None
-            }
-        }
-    }).collect()
+        })
+        .collect()
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -105,7 +110,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             PathBuf::from("error.json")
         }
     });
-
 
     if posts.is_empty() {
         println!("No posts to process.");

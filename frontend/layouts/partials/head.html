@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/gallery.css">
+    {{ if eq .Type "search" }}
+    <link rel="stylesheet" href="/css/search.css">
+    {{ end }}
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DBQD0DQCZL"></script>
     <script>

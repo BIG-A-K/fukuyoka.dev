@@ -1,0 +1,10 @@
+{{ define "main" }}
+  <h1>検索</h1>
+  <form id="search-form" class="search-form">
+    <input type="text" id="search-input" placeholder="検索ワードを入力..." class="search-input">
+    <button type="submit" class="search-button">検索</button>
+  </form>
+  <div id="search-status" class="search-status"></div>
+  <ul class="post-grid search-results" id="search-results"></ul>
+  <script src="/js/search.js" defer></script>
+{{ end }}

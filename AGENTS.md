@@ -9,9 +9,11 @@ This file provides guidance for agentic coding assistants working on the Fukuyok
 make build          # Build all Docker images
 make up             # Start containers
 make down           # Stop containers
+make restart        # Restart app container
+make restart-proxy  # Reload nginx config without full restart
 make in             # Shell into fukuyoka_app container
 make logs           # View container logs
-make restart-proxy  # Reload nginx config without full restart
+make ps             # List running containers
 make clean          # Remove containers, networks, volumes
 ```
 
@@ -25,12 +27,13 @@ cargo run --release            # Run API server
 cargo test                     # Run all tests
 cargo test <test_name>         # Run specific test (e.g., cargo test test_parse_frontmatter)
 cargo test -- --nocapture      # Run tests with println! output visible
-
-# Embedding CLI
-cargo run --bin embed -- --all                    # Generate embeddings for all posts
-cargo run --bin embed -- --src path/to/post.md    # Embed single post
-cargo run --bin embed -- -h                       # Show help
 ```
+
+### CLI tools
+- Use `clap` with `derive` feature for argument parsing
+- Place binaries in `src/bin/<name>.rs` and register in Cargo.toml
+- Follow `Args` struct pattern with `#[derive(Parser, Debug)]`
+- Use `std::process::exit()` for CLI errors, never panic
 
 ### Hugo frontend
 ```bash
@@ -43,12 +46,7 @@ make hugo           # Build static site (cd frontend && hugo)
 - Group imports: external crates → std → local modules
 - Use `use crate_name::module::item;` format (not nested)
 - Re-export public API through lib.rs when appropriate
-- Example:
-  ```rust
-  use axum::{routing::{get, post}, Json, Router};
-  use std::path::Path;
-  use rust_app::embedding::EmbeddingModel;
-  ```
+- Example: `use axum::{routing::{get, post}, Json}; use std::path::Path;`
 
 ### Naming conventions
 - Functions and variables: `snake_case` (e.g., `upload_images`, `file_path`)
@@ -63,28 +61,12 @@ make hugo           # Build static site (cd frontend && hugo)
 - Prefer `map_err(|e| format!("...: {e}"))` for context over unwrap
 - Match on errors with descriptive messages for user-facing endpoints
 - Never panic in production code; return proper HTTP status codes instead
-- Example:
-  ```rust
-  pub fn new(model_id: &str) -> Result<Self, Box<dyn std::error::Error>> {
-      let api = ApiBuilder::new().build()?;
-      // ...
-  }
-  ```
 
 ### Structs and types
 - Use `pub` for all fields that need to be serialized/deserialized
 - Derive `Debug` for all structs, `Clone` when useful
 - Use `#[derive(Serialize, Deserialize)]` for JSON structures
 - Keep structs in lib.rs if shared across modules, otherwise in module files
-- Example:
-  ```rust
-  #[derive(Debug, Clone)]
-  pub struct Post {
-      pub filename: String,
-      pub title: String,
-      // ...
-  }
-  ```
 
 ### Async and tokio
 - Use `tokio::fs` for async file operations
@@ -103,6 +85,12 @@ make hugo           # Build static site (cd frontend && hugo)
   }
   ```
 
+### External command execution
+- Use `tokio::process::Command` for async command execution
+- Check `.status.success()` for command results
+- Use `String::from_utf8_lossy()` for stdout/stderr conversion
+- Example: `Command::new("aws").args(["s3", "ls"]).output().await?`
+
 ### String formatting
 - Use `format!()` for string interpolation (not concatenation)
 - Use `{}` placeholder, only use `{:?}`/`{:#?}` for debug output
@@ -112,35 +100,18 @@ make hugo           # Build static site (cd frontend && hugo)
 - Use `std::path::{Path, PathBuf}` for cross-platform paths
 - Use `.to_string_lossy()` when converting to String (rarely needed)
 - Always validate paths to prevent traversal attacks (check for "..", "/", "\\")
-- Example:
-  ```rust
-  if filename.contains("..") || filename.contains('/') || filename.contains('\\') {
-      return Err(StatusCode::BAD_REQUEST);
-  }
-  ```
 
 ### Testing
 - Place tests in module at bottom of file: `#[cfg(test)] mod tests { ... }`
 - Use descriptive test names: `test_<function>_<scenario>`
 - Test both success and error paths
-- Example:
-  ```rust
-  #[test]
-  fn test_parse_frontmatter() {
-      let content = r#"+++
-  title = "Test"
-  +++
-  body"#;
-      let (metadata, _, _, _) = parse_frontmatter(content);
-      assert_eq!(metadata.get("title").unwrap(), "Test");
-  }
-  ```
 
 ### Comments and documentation
 - Use `///` for public function documentation (rustdoc style)
 - Prefer inline comments over separate lines when brief
 - Keep comments in English unless context requires Japanese (consistency within file)
 - Use `// TODO:` or `// FIXME:` for temporary markers
+- Some files (e.g., admin.rs, embedding.rs) use Japanese comments for domain context
 
 ### Environment variables
 - Use `std::env::var("KEY")` for required variables
