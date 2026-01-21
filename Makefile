@@ -9,7 +9,7 @@ CURRENT_USER := $(shell whoami)
 CURRENT_GROUP := $(shell id -gn)
 BUILD_ARGS := --build-arg UID=$(CURRENT_UID) --build-arg GID=$(CURRENT_GID) --build-arg USER=$(CURRENT_USER) --build-arg GROUP=$(CURRENT_GROUP)
 
-.PHONY: build up down logs bash parquet api test clean embedding
+.PHONY: build up down logs bash parquet api test clean embedding embed
 
 help:
 	@echo "Makefile commands:"
@@ -18,6 +18,7 @@ help:
 	@echo "  down       - Stop the Docker containers"
 	@echo "  restart-*  - Restart a container (e.g., make restart-fukuyoka_app)"
 	@echo "  in         - Access the app container shell"
+	@echo "  embed      - Build embedding binary in container (cargo build --release)"
 	@echo "  logs       - View logs of the app container"
 	@echo "  ps         - List running containers"
 	@echo "  hugo       - Build the frontend with Hugo"
@@ -50,6 +51,9 @@ logs:
 
 hugo:
 	cd frontend && hugo 
+
+embed:
+	$(COMPOSE) exec $(SERVICE) cargo build --release && ./target/release/embed --all
 
 clean:
 	$(COMPOSE) down -v --remove-orphans
