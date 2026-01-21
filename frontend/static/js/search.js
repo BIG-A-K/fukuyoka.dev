@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const thumbnail = result.thumbnail || '/favicon.png';
       return `
       <li>
-        <a href="${url}" aria-label="${result.url}">
+        <a href="${url}" aria-label="${result.url.toLowerCase()}">
           <img src="${thumbnail}" alt="${result.title}" loading="lazy" />
           <div class="thumb-caption">
             <p class="thumb-title">${result.title}</p>
