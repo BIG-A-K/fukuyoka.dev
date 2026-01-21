@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
   function displayResults(results) {
     console.log('Displaying results:', results);
     searchResults.innerHTML = results.map(result => {
-      const url = result.url || result.URL;
+      const url = result.url || '#';
       const thumbnail = result.thumbnail || '/favicon.png';
       return `
       <li>
-        <a href="${url}" aria-label="${result.title}">
+        <a href="${url}" aria-label="${result.url}">
           <img src="${thumbnail}" alt="${result.title}" loading="lazy" />
           <div class="thumb-caption">
             <p class="thumb-title">${result.title}</p>

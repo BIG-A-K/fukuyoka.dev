@@ -33,7 +33,8 @@ down:
 	$(COMPOSE) down
 
 restart:
-	$(COMPOSE) restart fukuyoka_app
+	$(COMPOSE) down fukuyoka_app
+	$(COMPOSE) up -d fukuyoka_app
 
 restart-proxy:
 	docker exec  fukuyoka_proxy nginx -s reload

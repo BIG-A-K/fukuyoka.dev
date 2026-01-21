@@ -30,6 +30,7 @@ struct Args {
 struct PostWithEmbedding {
     filename: String,
     filepath: String,
+    url: String,
     title: String,
     date: String,
     thumbnail: Option<String>,
@@ -47,9 +48,11 @@ fn create_embeddings(posts: Vec<Post>, model: &EmbeddingModel) -> Vec<PostWithEm
             match model.embed(&text) {
                 Ok(embedding) => {
                     println!("  Embedded: {} ({})", post.title, post.filename);
+                    let url = format!("/posts/{}/", post.filename);
                     Some(PostWithEmbedding {
                         filename: post.filename,
                         filepath: post.filepath,
+                        url,
                         title: post.title,
                         date: post.date,
                         thumbnail: post.thumbnail,
