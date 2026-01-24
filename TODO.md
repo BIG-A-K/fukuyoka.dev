@@ -15,11 +15,10 @@
 
 ## 検索機能
 ### front
-- [ ] `/search`でfrontendに検索ページを描画(hugoを使う)
-- [ ] `/result`にredirect。ここでapiの返り値を描画し、検索結果を出す
+- [x] `/search`でfrontendに検索ページを描画(hugoを使う)
 ### API
-- [ ] `/api/embedding`で埋め込み
-  - [ ] `/api/search`で検索結果のJsonを取得
+- [x] `/api/embedding`で埋め込み
+  - [x] `/api/search`で検索結果のJsonを取得
 
 
 ## embedding(事前準備)
