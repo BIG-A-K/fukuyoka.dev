@@ -10,6 +10,7 @@ thumbnail = 'https://photo.fukuyoka.dev/naritake_miso.jpg'
 
 なりたけ〜(気さくな挨拶)
 
+![なりたけ池袋店: またきてしまった。](https://photo.fukuyoka.dev/naritake_kanban.jpg)
 
 今回も、またしてもなりたけ。
 
