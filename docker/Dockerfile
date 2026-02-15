@@ -50,11 +50,10 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean \
     && apt-get install -y --no-install-recommends ca-certificates curl pkg-config libssl-dev sudo libimage-exiftool-perl \
     && rm -rf /var/lib/apt/lists/*
 
-# Create user with specified UID/GID
-RUN addgroup --gid ${GID} ${GROUP} \
-    && useradd -ms /bin/bash -u ${UID} -g ${GID} -G sudo ${USER} \
-    && echo "${USER}:${USER}" | chpasswd \
-    && chown -R ${USER}:${GROUP} /usr/local/cargo
+
+RUN groupadd -f -g ${GID} ${GROUP}
+RUN useradd -ms /bin/zsh -u ${UID} -g ${GID} -G sudo ${USER} &&\
+    echo ${USER}:${USER} | chpasswd
 
 USER ${USER}
 WORKDIR /home/${USER}

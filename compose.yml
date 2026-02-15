@@ -9,14 +9,13 @@ services:
   fukuyoka_app:
     image: fukuyoka_app:latest
     build:
-      context: ..
       dockerfile: docker/Dockerfile
     env_file:
-      - ../.env
+      - .env
     container_name: fukuyoka
     init: true
     volumes:
-      - ../:/app
+      - ./:/app
     working_dir: /app
     command: bash -c "cargo run --release --bin fukuyoka"
     restart: unless-stopped
@@ -28,13 +27,13 @@ services:
     container_name: fukuyoka_frontend
     working_dir: /src
     env_file:
-      - ../.env
+      - .env
     environment:
       HUGO_ENV: production
       DOMAIN: ${DOMAIN}
     command: server --bind 0.0.0.0 --port 1313 --baseURL https://${DOMAIN} --appendPort=false
     volumes:
-      - ../frontend:/src
+      - ./frontend:/src
     restart: unless-stopped
     networks:
       - fukuyoka
@@ -46,10 +45,10 @@ services:
     ports:
       - "51841:80"
     volumes:
-      - ../nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ../nginx/teapot.html:/etc/nginx/html/teapot.html:ro
-      - ../.htpasswd:/etc/nginx/.htpasswd:ro
-      - ../admin:/var/www/admin:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/teapot.html:/etc/nginx/html/teapot.html:ro
+      - ./admin/.htpasswd:/etc/nginx/.htpasswd:ro
+      - ./admin:/var/www/admin:ro
     healthcheck:
       test: ["CMD-SHELL", "nginx -t || exit 1"]
       interval: 30s
@@ -68,7 +67,7 @@ services:
     image: docker.io/cloudflare/cloudflared:latest
     container_name: cloudflared
     env_file:
-      - ../.env
+      - .env
     environment:
       TUNNEL_TOKEN: ${TUNNEL_TOKEN}
     command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
@@ -76,5 +75,22 @@ services:
     depends_on:
       fukuyoka_proxy:
         condition: service_healthy
+    networks:
+      - fukuyoka
+
+  db:
+    image: fukuyoka_db:latest
+    build:
+      dockerfile: docker/db/Dockerfile
+    container_name: fukuyoka_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    # volumes:
+    #   - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
     networks:
       - fukuyoka
