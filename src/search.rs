@@ -1,82 +1,114 @@
+use axum::Json;
+use postgres::Client;
 use serde::{Deserialize, Serialize};
 
-pub const EMBEDDINGS_PATH: &str = "embeddings.json";
+use crate::db::connect_db;
+use crate::morphology::morphology;
 
-#[derive(Clone, Deserialize)]
-#[serde(default)]
-pub struct IndexedPost {
-    pub filename: String,
-    pub url: String,
-    pub title: String,
-    pub thumbnail: Option<String>,
-    pub embedding: Vec<f32>,
+#[derive(Deserialize)]
+pub struct SearchRequest {
+    pub query: String,
 }
 
-impl Default for IndexedPost {
-    fn default() -> Self {
-        Self {
-            filename: String::new(),
-            url: String::new(),
-            title: String::new(),
-            thumbnail: None,
-            embedding: Vec::new(),
-        }
-    }
-}
-
-#[derive(Clone)]
-pub struct SearchIndex {
-    posts: Vec<IndexedPost>,
+struct SearchResult {
+    content: String,
+    score: f32,
 }
 
 #[derive(Serialize)]
-pub struct SearchResult {
-    pub title: String,
-    pub url: String,
-    pub thumbnail: Option<String>,
-    pub score: f32,
+pub struct SearchResponse {
+    pub status: bool,
+    pub results: Vec<String>,
+    pub msg: Option<String>,
 }
 
-impl SearchIndex {
-    pub fn load(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
-        let content = std::fs::read_to_string(path)?;
-        let posts: Vec<IndexedPost> = serde_json::from_str(&content)?;
-        println!("Loaded {} posts from {}", posts.len(), path);
-        Ok(Self { posts })
+pub async fn search<S>(Json(payload): Json<SearchRequest>) -> Json<SearchResponse> {
+    let text = payload.query.trim();
+    if text.is_empty() {
+        return Json(SearchResponse { status: false, results: vec![], msg: Some("Query is empty".into()) });
     }
 
-    pub fn search(&self, query_embedding: &[f32], top_k: usize) -> Vec<SearchResult> {
-        let mut scored: Vec<_> = self
-            .posts
-            .iter()
-            .map(|post| {
-                let score = cosine_similarity(query_embedding, &post.embedding);
-                (post, score)
-            })
-            .collect();
+    let morph_tokens = match morphology(text) {
+        Ok(tokens) => tokens,
+        Err(e) => {
+            println!("Error generating tokens: {e}");
+            return Json(SearchResponse { status: false, results: vec![], msg: Some(format!("Error generating tokens: {e}")) });
+        }
+    };
+    let token_str = morph_tokens.join(" ");
 
-        scored.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+    let mut con = match connect_db() {
+        Ok(connection) => connection,
+        Err(e) => {
+            println!("Error connecting to database: {e}");
+            return Json(SearchResponse { status: false, results: vec![], msg: Some(format!("Error connecting to database: {e}")) });
+        }
+    };
 
-        scored
-            .into_iter()
-            .take(top_k)
-            .map(|(post, score)| SearchResult {
-                title: post.title.clone(),
-                url: post.url.clone(),
-                thumbnail: post.thumbnail.clone(),
-                score,
-            })
-            .collect()
-    }
+    let vector_results = vector_similarity_search(&mut con, vec![], 5);
+    let token_results = bm25(&mut con, token_str, 5);
+    let combined_results = rff_rerank(vector_results, token_results);
+
+    Json(SearchResponse {
+        status: true,
+        results: combined_results.into_iter().map(|r| r.content).collect(),
+        msg: None,
+    })
 }
 
-fn cosine_similarity(a: &[f32], b: &[f32]) -> f32 {
-    let dot: f32 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-    let norm_a: f32 = a.iter().map(|x| x * x).sum::<f32>().sqrt();
-    let norm_b: f32 = b.iter().map(|x| x * x).sum::<f32>().sqrt();
-    if norm_a == 0.0 || norm_b == 0.0 {
-        0.0
-    } else {
-        dot / (norm_a * norm_b)
+
+fn rff_rerank(embed_results: Vec<SearchResult>, token_results: Vec<SearchResult>) -> Vec<SearchResult> {
+    let mut combined_results = Vec::new();
+    for (embed_result, token_result) in embed_results.iter().zip(token_results.iter()) {
+        let combined_score = 0.7 * embed_result.score + 0.3 * token_result.score;
+        combined_results.push(SearchResult {
+            content: embed_result.content.clone(),
+            score: combined_score,
+        });
     }
+    combined_results.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap());
+    combined_results
+}
+
+fn vector_similarity_search(connection: &mut Client, embedding: Vec<f32>, top_k: usize) -> Vec<SearchResult> {
+    let sql = format!(
+        "SELECT content, embedding <=> $1::vector AS score \
+         FROM documents ORDER BY score LIMIT {top_k}"
+    );
+    let embedding_str = format!("[{}]", embedding.iter().map(|v| v.to_string()).collect::<Vec<_>>().join(","));
+    let mut results = Vec::new();
+    match connection.query(&sql, &[&embedding_str]) {
+        Ok(rows) => {
+            for row in rows {
+                let content: String = row.get(0);
+                let score: f32 = row.get(1);
+                results.push(SearchResult { content, score });
+            }
+        }
+        Err(e) => {
+            println!("Error in vector search: {e}");
+        }
+    }
+    results
+}
+
+fn bm25(connection: &mut Client, tokens: String, top_k: usize) -> Vec<SearchResult> {
+    let sql = format!(
+        "SELECT content, jp_tokenized_content <@> to_bm25query($1, 'bm25_idx') AS score \
+         FROM documents ORDER BY score ASC LIMIT {top_k}"
+    );
+    let mut results = Vec::new();
+    match connection.query(&sql, &[&tokens]) {
+        Ok(rows) => {
+            for row in rows {
+                let content: String = row.get(0);
+                let score: f32 = row.get(1);
+                results.push(SearchResult { content, score });
+            }
+        }
+        Err(e) => {
+            println!("Error in BM25 search: {e}");
+        }
+    }
+    results
 }

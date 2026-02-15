@@ -17,7 +17,7 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    command: bash -c "cargo run --release --bin fukuyoka"
+    command: bash -c "cargo run --release --bin api"
     restart: unless-stopped
     networks:
       - fukuyoka
@@ -93,4 +93,5 @@ services:
     #   - db_data:/var/lib/postgresql/data
     restart: unless-stopped
     networks:
-      - fukuyoka
+      fukuyoka:
+        ipv4_address: 192.168.100.11
