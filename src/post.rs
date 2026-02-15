@@ -13,12 +13,20 @@ pub struct Post {
     pub tags: Vec<String>,
     pub categories: Vec<String>,
     pub body: String,
+    pub alt_texts: Vec<String>,
 }
 
 impl Post {
     /// Create text for embedding with e5 model prefix
     pub fn text_for_embedding(&self) -> String {
-        format!("passage: {} {}", self.title, self.body)
+        let mut text = format!("passage: {} {}", self.title, self.body);
+
+        if !self.alt_texts.is_empty() {
+            text.push(' ');
+            text.push_str(&self.alt_texts.join(" "));
+        }
+
+        text
     }
 }
 
@@ -72,6 +80,16 @@ pub fn parse_frontmatter(
     (metadata, tags, categories, body)
 }
 
+/// Extract alt texts from markdown image syntax
+pub fn extract_alt_texts(text: &str) -> Vec<String> {
+    let re = Regex::new(r"!\[(.*?)\]\(.*?\)").unwrap();
+    re.captures_iter(text)
+        .filter_map(|cap| cap.get(1))
+        .map(|m| m.as_str().to_string())
+        .filter(|s| !s.is_empty())
+        .collect()
+}
+
 /// Remove markdown syntax for cleaner embedding
 pub fn clean_markdown(text: &str) -> String {
     // Remove images: ![alt](url)
@@ -93,6 +111,7 @@ pub fn clean_markdown(text: &str) -> String {
 pub fn load_post(filepath: &Path) -> Option<Post> {
     let content = fs::read_to_string(filepath).ok()?;
     let (metadata, tags, categories, body) = parse_frontmatter(&content);
+    let alt_texts = extract_alt_texts(&body);
     let clean_body = clean_markdown(&body);
 
     // Skip drafts
@@ -109,6 +128,7 @@ pub fn load_post(filepath: &Path) -> Option<Post> {
         tags,
         categories,
         body: clean_body,
+        alt_texts,
     })
 }
 

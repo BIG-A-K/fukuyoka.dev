@@ -37,6 +37,7 @@ struct PostWithEmbedding {
     tags: Vec<String>,
     categories: Vec<String>,
     body: String,
+    alt_texts: Vec<String>,
     embedding: Vec<f32>,
 }
 
@@ -59,6 +60,7 @@ fn create_embeddings(posts: Vec<Post>, model: &EmbeddingModel) -> Vec<PostWithEm
                         tags: post.tags,
                         categories: post.categories,
                         body: post.body,
+                        alt_texts: post.alt_texts,
                         embedding,
                     })
                 }

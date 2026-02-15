@@ -13,6 +13,10 @@ path = "src/main.rs"
 name = "embed"
 path = "src/bin/embed.rs"
 
+[[bin]]
+name = "prepare"
+path = "src/bin/prepare.rs"
+
 [dependencies]
 axum = "0.8.8"
 axum-extra = { version = "0.10", features = ["multipart"] }
