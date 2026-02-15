@@ -11,16 +11,24 @@ use tokio::fs;
 use rust_app::admin;
 use rust_app::embedding::EmbeddingModel;
 use rust_app::search::search;
-
-#[derive(Clone)]
-struct AppState {
-    model: Arc<EmbeddingModel>,
-}
+use rust_app::db::initialize_db;
 
 #[tokio::main]
 async fn main() {
     let _ = fs::create_dir_all(admin::UPLOAD_DIR).await;
-
+    // fileがあるかを確認
+    let posts_data = "posts.json";
+    if !std::path::Path::new(posts_data).exists() {
+        eprintln!("Error: {} not found", posts_data);
+        return;
+    }
+    println!("Found {}. Initializing database...", posts_data);
+    // Initialize database
+    if let Err(e) = initialize_db(posts_data).await {
+        eprintln!("Error initializing database: {}", e);
+        return;
+    }
+    
     // Load embedding model
     println!("Loading embedding model...");
     let model = Arc::new(
@@ -28,8 +36,6 @@ async fn main() {
             .expect("Failed to load embedding model"),
     );
     println!("Embedding model loaded");
-
-    let state = AppState { model };
 
     // Admin routes (protected by nginx Basic Auth at /api/akasha/*)
     let admin_routes = Router::new()
@@ -42,11 +48,11 @@ async fn main() {
     let app = Router::new()
         .route("/", get(root))
         .route("/health", get(health_check))
-        .route("/search", post(search::<AppState>))
+        .route("/search", post(search))
         .nest("/akasha", admin_routes)
         .layer(DefaultBodyLimit::max(50 * 1024 * 1024))
         .fallback(fallback)
-        .with_state(state);
+        .with_state(model);
 
     axum::serve(
         tokio::net::TcpListener::bind("0.0.0.0:80").await.unwrap(),

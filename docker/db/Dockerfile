@@ -1,4 +1,4 @@
-FROM postgres:18
+FROM postgres:17
 
 # アーキテクチャの自動検出
 ARG TARGETARCH
