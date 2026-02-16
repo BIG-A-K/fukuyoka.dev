@@ -40,7 +40,7 @@ pub async fn search(State(model): State<Arc<EmbeddingModel>>, Json(payload): Jso
     if text.is_empty() {
         return Json(SearchResponse { status: false, results: vec![], msg: Some("Query is empty".into()) });
     }
-
+    println!("Received search query: {text}");
     let client = match connect_db().await {
         Ok(connection) => connection,
         Err(e) => {
@@ -110,7 +110,7 @@ fn rrf_rerank(embed_results: Vec<SearchResult>, token_results: Vec<SearchResult>
 
 async fn vector_similarity_search(client: &Client, embedding: Vec<f32>, top_k: usize) -> Vec<SearchResult> {
     let sql = format!(
-        "SELECT title, url, thumbnail, embeds <=> $1::vector AS score \
+        "SELECT title, url, thumbnail, embeds <=> $1::text::vector AS score \
          FROM documents ORDER BY score LIMIT {top_k}"
     );
     let embedding_str = format!("[{}]", embedding.iter().map(|v| v.to_string()).collect::<Vec<_>>().join(","));
