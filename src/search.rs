@@ -4,6 +4,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use tokio_postgres::Client;
 use serde::{Deserialize, Serialize};
+use std::env;
 
 use crate::db::connect_db;
 use crate::embedding::EmbeddingModel;
@@ -109,9 +110,13 @@ fn rrf_rerank(embed_results: Vec<SearchResult>, token_results: Vec<SearchResult>
 }
 
 async fn vector_similarity_search(client: &Client, embedding: Vec<f32>, top_k: usize) -> Vec<SearchResult> {
+    let table_name = match env::var("POSTGRES_TABLE") {
+        Ok(v) => v,
+        Err(_) => { println!("POSTGRES_TABLEを設定してください"); return Vec::new(); }
+    };
     let sql = format!(
         "SELECT title, url, thumbnail, embeds <=> $1::text::vector AS score \
-         FROM documents ORDER BY score LIMIT {top_k}"
+         FROM {table_name} ORDER BY score LIMIT {top_k}"
     );
     let embedding_str = format!("[{}]", embedding.iter().map(|v| v.to_string()).collect::<Vec<_>>().join(","));
     let mut results = Vec::new();
@@ -133,9 +138,13 @@ async fn vector_similarity_search(client: &Client, embedding: Vec<f32>, top_k: u
 }
 
 async fn bm25(client: &Client, tokens: String, top_k: usize) -> Vec<SearchResult> {
+    let table_name = match env::var("POSTGRES_TABLE") {
+        Ok(v) => v,
+        Err(_) => { println!("POSTGRES_TABLEを設定してください"); return Vec::new(); }
+    };
     let sql = format!(
-        "SELECT title, url, thumbnail, tokens <@> to_bm25query($1, 'documents_tokens_idx') AS score \
-         FROM documents ORDER BY score ASC LIMIT {top_k}"
+        "SELECT title, url, thumbnail, tokens <@> to_bm25query($1, '{table_name}_tokens_idx') AS score \
+         FROM {table_name} ORDER BY score ASC LIMIT {top_k}"
     );
     let mut results = Vec::new();
     match client.query(&sql, &[&tokens]).await {

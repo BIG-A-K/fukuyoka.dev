@@ -4,7 +4,7 @@ use std::env;
 pub async fn connect_db() -> Result<Client, Box<dyn std::error::Error>> {
     let user = env::var("POSTGRES_USER").unwrap_or_else(|_| "postgres".to_string());
     let db = env::var("POSTGRES_DB").unwrap_or_else(|_| "postgres".to_string());
-    let password = env::var("POSTGRES_PASSWORD").unwrap_or_else(|_| "password".to_string());
+    let password = env::var("POSTGRES_PASSWORD").map_err(|_| "POSTGRES_PASSWORDを設定してください")?;
 
     let mut config = tokio_postgres::Config::new();
     config.host("db");
@@ -77,30 +77,36 @@ async fn enable_extensions(client: &Client) -> Result<(), Box<dyn std::error::Er
 }
 
 async fn create_table(client: &Client) -> Result<(), Box<dyn std::error::Error>> {
+    let table_name = env::var("POSTGRES_TABLE").map_err(|_| "POSTGRES_TABLEを設定してください")?;
     client
         .batch_execute(
-            "
-        CREATE TABLE IF NOT EXISTS documents (
-            id SERIAL PRIMARY KEY,
-            title TEXT,
-            url TEXT,
-            thumbnail TEXT,
-            tokens TEXT,
-            embeds vector(768)
-        );
-        ",
+            &format!(
+                "
+                CREATE TABLE IF NOT EXISTS {table_name} (
+                    id SERIAL PRIMARY KEY,
+                    title TEXT,
+                    url TEXT,
+                    thumbnail TEXT,
+                    tokens TEXT,
+                    embeds vector(768)
+                );
+                ",
+            ),
         )
         .await?;
     Ok(())
 }
 
 async fn create_indexes(client: &Client) -> Result<(), Box<dyn std::error::Error>> {
+    let table_name = env::var("POSTGRES_TABLE").map_err(|_| "POSTGRES_TABLEを設定してください")?;
     client
         .batch_execute(
-            "
-        CREATE INDEX IF NOT EXISTS documents_embeds_idx ON documents USING hnsw (embeds vector_cosine_ops);
-        CREATE INDEX IF NOT EXISTS documents_tokens_idx ON documents USING bm25 (tokens) WITH (text_config = 'simple');
-        ",
+            &format!(
+                "
+                CREATE INDEX IF NOT EXISTS {table_name}_embeds_idx ON {table_name} USING hnsw (embeds vector_cosine_ops);
+                CREATE INDEX IF NOT EXISTS {table_name}_tokens_idx ON {table_name} USING bm25 (tokens) WITH (text_config = 'simple');
+                ",
+            ),
         )
         .await?;
     Ok(())
@@ -114,9 +120,10 @@ async fn insert_data(
     tokens: &str,
     embedding_str: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    let table_name = env::var("POSTGRES_TABLE").map_err(|_| "POSTGRES_TABLEを設定してください")?;
     client
         .execute(
-            "INSERT INTO documents (title, url, thumbnail, tokens, embeds) VALUES ($1, $2, $3, $4, $5::text::vector)",
+            &format!("INSERT INTO {table_name} (title, url, thumbnail, tokens, embeds) VALUES ($1, $2, $3, $4, $5::text::vector)"),
             &[&title, &url, &thumbnail, &tokens, &embedding_str],
         )
         .await?;

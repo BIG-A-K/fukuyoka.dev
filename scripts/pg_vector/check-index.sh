@@ -21,7 +21,7 @@ SET enable_seqscan = off;
 
 EXPLAIN (ANALYZE, BUFFERS, VERBOSE)
 SELECT id, title
-FROM documents
+FROM ${POSTGRES_TABLE:-documents}
 ORDER BY embeds <=> ('$QVEC'::vector(768))
 LIMIT $K;
 SQL
