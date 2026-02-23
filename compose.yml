@@ -42,8 +42,6 @@ services:
     image: nginx:latest
     container_name: fukuyoka_proxy
     restart: unless-stopped
-    ports:
-      - "51841:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/teapot.html:/etc/nginx/html/teapot.html:ro
