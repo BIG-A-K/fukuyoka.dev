@@ -31,9 +31,9 @@ services:
     environment:
       HUGO_ENV: production
       DOMAIN: ${DOMAIN}
-    command: server --bind 0.0.0.0 --port 1313 --baseURL https://${DOMAIN} --appendPort=false
+    command: server --bind 0.0.0.0 --port 1313 --baseURL https://${DOMAIN} --appendPort=false --destination /tmp/hugo --cacheDir /tmp/hugo-cache
     volumes:
-      - ./frontend:/src
+      - ./frontend:/src:ro
     restart: unless-stopped
     networks:
       - fukuyoka
