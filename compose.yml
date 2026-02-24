@@ -12,7 +12,7 @@ services:
       dockerfile: docker/Dockerfile
     env_file:
       - .env
-    container_name: fukuyoka
+    container_name: fukuyoka_app
     init: true
     volumes:
       - ./:/app
@@ -49,7 +49,7 @@ services:
       - ./admin:/var/www/admin:ro
     healthcheck:
       test: ["CMD-SHELL", "nginx -t || exit 1"]
-      interval: 30s
+      interval: 10s
       timeout: 10s
       retries: 3
     depends_on:
