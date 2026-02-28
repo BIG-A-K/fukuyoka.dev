@@ -83,7 +83,7 @@ logs:
 	$(COMPOSE) logs -f
 
 hugo:
-	cd frontend && hugo
+	$(COMPOSE) exec -it fukuyoka_frontend hugo
 
 embed:
 	$(COMPOSE) exec $(SERVICE) bash -c "cargo build --release --bin embed && ./target/release/embed --all"
