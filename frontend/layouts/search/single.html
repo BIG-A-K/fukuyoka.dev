@@ -1,7 +1,11 @@
 {{ define "main" }}
   <h1>検索</h1>
+  <p class="center-text">
+    ここでは過去の投稿を検索できます。<br>
+    「なりたけ」などと検索すれば私の大好きなラーメン屋さんの投稿が見つかるかもしれませんね！
+  </p>
   <form id="search-form" class="search-form">
-    <input type="text" id="search-input" placeholder="検索ワードを入力..." class="search-input">
+    <input type="text" id="search-input" placeholder="検索ワードを入力...(例： こってりラーメン 味噌 ふくよか)" class="search-input">
     <button type="submit" class="search-button">検索</button>
   </form>
   <div id="search-status" class="search-status"></div>
