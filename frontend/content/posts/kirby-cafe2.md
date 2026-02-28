@@ -3,7 +3,7 @@ title = 'Kirby Cafe again'
 date = 2026-02-24T16:48:33+09:00
 draft = false
 description = 'カービィカフェにまた行った。最高だぜ！！！'
-tags = ['チーズ','おすすめ','スイーツ']
+tags = ['スイーツ']
 categories = ['すこやか']
 thumbnail = 'https://photo.fukuyoka.dev/kirby-cafe/IMG_6549.jpeg'
 +++
