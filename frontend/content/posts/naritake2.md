@@ -5,7 +5,7 @@ draft = false
 description = ''
 tags = ['麺類']
 categories = ['ふくよか']
-thumbnail = '/photo/naritake-shoyu.jpeg'
+thumbnail = 'https://photo.fukuyoka.dev/naritake-shoyu.jpeg'
 +++
 
 
