@@ -42,6 +42,9 @@ Hola〜♪(気さくな挨拶)
 ## [Restaurante Marabierta](https://www.google.com/maps/place/Restaurante+Marabierta/@36.4793987,-4.9816708,17.61z/data=!4m6!3m5!1s0xd732bdba768b5dd:0xb8adb2e095f8a6bf!8m2!3d36.4785705!4d-4.9780868!16s%2Fg%2F11gjt_s_7y?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D)
 二軒目は[Restaurante Marabierta](https://www.google.com/maps/place/Restaurante+Marabierta/@36.4793987,-4.9816708,17.61z/data=!4m6!3m5!1s0xd732bdba768b5dd:0xb8adb2e095f8a6bf!8m2!3d36.4785705!4d-4.9780868!16s%2Fg%2F11gjt_s_7y?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D)。
 ここはマルベーリャの中心から西に10Kmほどいった海岸沿いにあります。
+![お店の外観](https://photo.fukuyoka.dev/marbella/IMG_6765.JPG)
+
+
 ![海岸: 目の前に広がるは地中海](https://photo.fukuyoka.dev/marbella/IMG_6766.JPG)
 ここには学会で知り合った日本人同士で行きました。
 
