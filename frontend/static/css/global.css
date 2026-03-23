@@ -120,16 +120,40 @@ main p a {
     text-decoration: none;
     border-bottom: 1px solid var(--link-color);
 }
+main h2 a {
+    color: var(--main-h2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--main-h2);
+}
+main h3 a {
+    color: var(--main-h3);
+    text-decoration: none;
+    border-bottom: 1px solid var(--main-h3);
+}
 
 main p a:visited {
     color: var(--link-hover);
     border-bottom: 1px solid var(--link-vh-botton);
 }
+main h2 a:visited {
+    color: var(--main-h2);
+}
+main h3 a:visited {
+    color: var(--main-h3);
+}
 
 main p a:hover {
     color: var(--link-visited);
-    border-bottom: 1px solid var(--link-vh-botton)
-}    
+    border-bottom: 1px solid var(--link-vh-botton);
+}
+main h2 a:hover {
+    color: var(--main-h2);
+    opacity: 0.7;
+}
+main h3 a:hover {
+    color: var(--main-h3);
+    opacity: 0.7;
+}
 
 
 @media (min-width: 640px) {
