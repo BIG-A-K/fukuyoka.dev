@@ -42,14 +42,17 @@ header #title{
 }
 
 #theme-toggle {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--text-color);
     border: none;
-    right: 10px;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
     position: absolute;
     background: transparent;
     cursor: pointer;
-    padding: 10px;
+    padding: 6px;
+    line-height: 1;
 }
 
 #sidebarToggle {
