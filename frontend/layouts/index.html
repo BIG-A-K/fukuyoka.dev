@@ -1,9 +1,13 @@
 {{ define "main" }}
-  <h1>😋ようこそ、fukuyoka.devへ！😋</h1>
+  <h1>ようこそ、fukuyoka.devへ！</h1>
+  <div style="text-align: center;">
+    <img src="https://www.fukuyoka.dev/favicon.png" alt="YummyyyyyYYYYYYY~~~~~~~">
+  </div>
+
   <p class="center-text">
   このサイトでは私の食事履歴を乗せていきます。<br>
-  たくさん食べて大きく、健やかにふくよかになろう！🫃<br>
-</p>
+  たくさん食べて大きく、健やかにふくよかになろう！<br>
+  </p>
   <h2>最近の投稿</h2>
   <ul class="post-grid">
     {{ $posts := where .Site.RegularPages "Section" "posts" }}
