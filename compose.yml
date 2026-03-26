@@ -47,6 +47,7 @@ services:
       - ./nginx/teapot.html:/etc/nginx/html/teapot.html:ro
     healthcheck:
       test: ["CMD-SHELL", "nginx -t || exit 1"]
+      start_period: 10s # DBやAPIの起動を待つための猶予期間
       interval: 10s
       timeout: 10s
       retries: 3
@@ -83,7 +84,6 @@ services:
       - .env
     volumes:
       - ./scripts/pg_vector:/scripts:ro
-    #   - db_data:/var/lib/postgresql/data
     restart: unless-stopped
     networks:
       fukuyoka:

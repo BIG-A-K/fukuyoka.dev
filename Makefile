@@ -10,7 +10,7 @@ CURRENT_GROUP := $(shell id -gn)
 BUILD_ARGS := --build-arg UID=$(CURRENT_UID) --build-arg GID=$(CURRENT_GID) --build-arg USER=$(CURRENT_USER) --build-arg GROUP=$(CURRENT_GROUP)
 
 .PHONY: build up down logs in prepare ps hugo clean help \
-        restart restart-proxy restart-db \
+        restart restart-db \
         db-shell db-logs \
         dev dev-build dev-down dev-logs
 
@@ -20,7 +20,6 @@ help:
 	@echo "  up             - Start the Docker containers"
 	@echo "  down           - Stop the Docker containers"
 	@echo "  restart        - Restart the app container"
-	@echo "  restart-proxy  - Reload nginx config"
 	@echo "  restart-db     - Restart the database container"
 	@echo "  in             - Access the app container shell"
 	@echo "  prepare        - Generate posts.json for PostgreSQL import"
@@ -67,9 +66,6 @@ restart:
 	$(COMPOSE) down fukuyoka_app
 	$(COMPOSE) up -d fukuyoka_app
 
-restart-proxy:
-	docker exec fukuyoka_proxy nginx -s reload
-
 restart-db:
 	$(COMPOSE) restart db
 
@@ -86,7 +82,7 @@ hugo:
 	$(COMPOSE) exec -it fukuyoka_frontend hugo
 
 prepare:
-	$(COMPOSE) exec $(SERVICE) bash -c "cargo build --release --bin prepare && ./target/release/prepare --all"
+	$(COMPOSE) run --rm --no-deps $(SERVICE) cargo run --release --bin prepare -- --all
 
 db-shell:
 	$(COMPOSE) exec db psql -U $${POSTGRES_USER} -d $${POSTGRES_DB}
