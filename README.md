@@ -7,16 +7,16 @@
 ## 起動手順
 `template.env`から`.env`を作成。
 ```sh
-make build 
+make build
 make up
 ```
 でAPIの起動ができます。
 
 起動するコンテナは全部で4つ。
 1. cloudflare tunnel : cloudflare経由でインターネット接続
-2. nginx : basic認証や`photo.fukuyoka.dev`へのプロキシなど
+2. nginx : `photo.fukuyoka.dev`へのプロキシなど
 3. hugo(Frontend描画) : 記事(html)の描画
-4. api(Rust) : 検索APIの提供(adminのAPIも共用)
+4. api(Rust) : 検索APIの提供
 
 # Fukuyoka ネットワーク構成図
 
@@ -33,8 +33,6 @@ graph LR
 
         subgraph fukuyoka_proxy - nginx :80
             direction TB
-            route_static["/akasha/* → 管理画面<br/>(Basic Auth + 静的ファイル)"]
-            route_admin_api["/api/akasha/* → Admin API<br/>(Basic Auth)"]
             route_api["/api/* → Public API"]
             route_photo["/photo/*.jpg → R2 proxy"]
             route_front["/* → Hugo"]
@@ -49,13 +47,11 @@ graph LR
     CF -->|Tunnel| cloudflared
     cloudflared -->|HTTP :80| fukuyoka_proxy
 
-    route_admin_api -->|"proxy_pass /akasha/"| app
     route_api -->|"proxy_pass /"| app
     route_photo -->|"proxy_pass HTTPS"| R2
     route_front -->|"proxy_pass :1313"| frontend
 
     app -.->|embedding/search| db
-    app -.->|"s3 sync (push)"| R2
 
     style CF fill:#f6a821,color:#000
     style R2 fill:#f6a821,color:#000
@@ -80,8 +76,6 @@ graph LR
 
 | パス | 認証 | 転送先 | 説明 |
 |------|------|--------|------|
-| `/akasha/*` | Basic Auth | 静的ファイル (`/var/www/admin/`) | 管理画面 |
-| `/api/akasha/*` | Basic Auth | `fukuyoka_app /akasha/` | 管理API (画像アップロード等) |
 | `/api/*` | なし | `fukuyoka_app /` | 公開API (embedding, search) |
 | `/photo/*.{png,jpg}` | なし | `photo.fukuyoka.dev` (R2) | 画像プロキシ |
 | `/*` | なし | `fukuyoka_frontend:1313` | ブログフロントエンド |

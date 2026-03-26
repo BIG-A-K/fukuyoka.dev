@@ -9,11 +9,8 @@
   - `https://www.fukuyoka.dev`: 通常のコンテンツ
   - `https://photo.fukuyoka.dev`: 画像を保存するR2ストレージ
   - `https://www.fukuyoka.dev/api`: Rust製のAPI
-  - `https://www.fukuyoka.dev/akasha`: 管理者画面(basic認証)
-  - `https://www.fukuyoka.dev/api/akasha/*`: 管理者用API(basic認証)
 - `src/`: Axumで作成されるRust製のAPIを保存しています。
   - `lib.rs`: モジュールのエクスポート
-  - `admin.rs`: アドミン用の実装
   - `search.rs`: 検索エンドポイントの実装（ハイブリッド検索）
   - `embedding.rs`: テキストの埋め込みの実装
   - `post.rs`: Markdown記事のパース処理
@@ -28,13 +25,7 @@
 ### 1. 記事投稿フロー
 
 ```
-[admin画面] → POST /api/akasha/upload → 画像を/tmp/dataに保存
-                                    ↓
-                              exiftoolでEXIF削除
-                                    ↓
-                         POST /api/akasha/push → R2にアップロード
-                                    ↓
-                         Hugo記事を作成・編集 → frontend/content/posts/*.md
+Hugo記事を作成・編集 → frontend/content/posts/*.md
                                     ↓
                          cargo run --bin prepare -- --all
                                     ↓
@@ -96,16 +87,6 @@ Cloudflare R2から画像を配信
   "msg": null
 }
 ```
-
-### 管理者API（Basic認証が必要）
-
-| メソッド | パス | 説明 |
-|---------|------|------|
-| POST | `/api/akasha/upload` | 画像をローカルにアップロード（multipart/form-data） |
-| GET | `/api/akasha/images` | アップロード済み画像一覧を取得 |
-| GET | `/api/akasha/local-image/{filename}` | ローカル画像を表示（プレビュー用） |
-| GET | `/api/akasha/diff` | ローカルとR2の画像差分を確認 |
-| POST | `/api/akasha/push` | ローカル画像をR2に同期 |
 
 ## 検索アーキテクチャ
 
@@ -214,25 +195,6 @@ CREATE INDEX posts_tokens_idx ON posts USING bm25 (tokens) WITH (text_config = '
 
 ## セキュリティ設計
 
-### パストラバーサル対策
-
-`admin.rs`でファイル名を検証：
-
-```rust
-if filename.contains("..") || filename.contains('/') || filename.contains('\\') {
-    return Err(StatusCode::BAD_REQUEST);
-}
-```
-
-### Basic認証
-
-nginxで以下に適用：
-
-- `/akasha` - 管理者画面
-- `/api/akasha/*` - 管理者用API
-
-認証情報は `admin/.htpasswd` に保存されます。
-
 ### 攻撃パスブロック
 
 nginxでWordPressなどの一般的な攻撃パスを418 I'm a teapot で返却：
@@ -243,17 +205,10 @@ location ~* ^/(wp-admin|wp-includes|wordpress|xmlrpc\.php) {
 }
 ```
 
-### EXIF情報削除
-
-アップロード時に自動的にexiftoolでEXIFメタデータを削除し、位置情報などの漏洩を防止。
-
 ## ディレクトリ構造
 
 ```
 fukuyoka/
-├── admin/                      # 管理者画面（HTML/CSS/JS）
-│   ├── index.html
-│   └── .htpasswd               # Basic認証（.gitignore対象）
 ├── compose.yml                 # Docker Compose設定（5サービス）
 ├── compose.override.yml        # 開発用オーバーライド
 ├── docker/
@@ -275,7 +230,6 @@ fukuyoka/
 │   └── pg_vector/             # PostgreSQL初期化スクリプト
 ├── src/                        # Rustソースコード
 │   ├── lib.rs                 # モジュールエクスポート
-│   ├── admin.rs               # 画像アップロード・R2同期
 │   ├── search.rs              # ハイブリッド検索ロジック
 │   ├── embedding.rs           # E5モデルラッパー
 │   ├── post.rs                # Markdownパース処理

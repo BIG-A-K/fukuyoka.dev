@@ -1,4 +1,3 @@
-pub mod admin;
 pub mod db;
 pub mod embedding;
 pub mod morphology;

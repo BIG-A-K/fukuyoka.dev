@@ -1,21 +1,17 @@
 use axum::{
     Json, Router,
-    extract::DefaultBodyLimit,
     http::Uri,
     routing::{get, post},
 };
 use serde_json::json;
 use std::sync::Arc;
-use tokio::fs;
 
-use rust_app::admin;
 use rust_app::embedding::EmbeddingModel;
 use rust_app::search::search;
 use rust_app::db::initialize_db;
 
 #[tokio::main]
 async fn main() {
-    let _ = fs::create_dir_all(admin::UPLOAD_DIR).await;
     // fileがあるかを確認
     let posts_data = "posts.json";
     if !std::path::Path::new(posts_data).exists() {
@@ -28,7 +24,7 @@ async fn main() {
         eprintln!("Error initializing database: {}", e);
         return;
     }
-    
+
     // Load embedding model
     println!("Loading embedding model...");
     let model = Arc::new(
@@ -37,20 +33,10 @@ async fn main() {
     );
     println!("Embedding model loaded");
 
-    // Admin routes (protected by nginx Basic Auth at /api/akasha/*)
-    let admin_routes = Router::new()
-        .route("/upload", post(admin::upload_images))
-        .route("/push", post(admin::push_storage))
-        .route("/images", get(admin::list_images))
-        .route("/local-image/{filename}", get(admin::serve_local_image))
-        .route("/diff", get(admin::diff_images));
-
     let app = Router::new()
         .route("/", get(root))
         .route("/health", get(health_check))
         .route("/search", post(search))
-        .nest("/akasha", admin_routes)
-        .layer(DefaultBodyLimit::max(50 * 1024 * 1024))
         .fallback(fallback)
         .with_state(model);
 

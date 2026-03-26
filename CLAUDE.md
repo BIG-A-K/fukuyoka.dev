@@ -20,15 +20,12 @@ Fukuyoka is a food diary blog site (幸者のふくよか日記) built with:
 4. **cloudflared** - Cloudflare Tunnel for external access
 
 ### Nginx Routing
-- `/akasha/*` → static admin panel with Basic Auth (alias to `/var/www/admin/`)
-- `/api/akasha/*` → Rust admin API with Basic Auth
 - `/api/*` → Rust public API (no auth)
 - `/photo/*.{png,jpeg,jpg}` → R2 bucket (`photo.fukuyoka.dev`)
 - `/*` → Hugo frontend
 
 ### Rust Code Structure
-- `src/main.rs` - Axum router, API endpoints
-- `src/admin.rs` - Image upload/sync to R2, local image serving
+- `src/bin/api.rs` - Axum router, API endpoints
 - `src/embedding.rs` - ML embedding model (multilingual-e5-base via candle)
 - `src/post.rs` - Hugo post parsing
 - `src/bin/embed.rs` - CLI tool for batch embedding generation
@@ -68,15 +65,7 @@ cd frontend && hugo # Same as above
 ### Public API (`/api/*`)
 - `GET /` - Hello message
 - `GET /health` - Health check
-- `POST /embedding` - Generate embedding for text (`{"text": "..."}`)
-- `POST /search` - Search posts (stub)
-
-### Admin API (`/api/akasha/*` - Basic Auth required)
-- `POST /akasha/upload` - Image upload (multipart/form-data)
-- `POST /akasha/push` - Sync local images to R2 (runs exiftool + aws s3 sync)
-- `GET /akasha/images` - List uploaded images
-- `GET /akasha/local-image/{filename}` - Serve uploaded image
-- `GET /akasha/diff` - Compare local vs R2 images
+- `POST /search` - Search posts
 
 ## Environment Setup
 
@@ -93,8 +82,3 @@ Required `.env` file (copy from `template.env`):
 1. Create markdown in `frontend/content/posts/`
 2. Use front matter: title, date, tags, categories, thumbnail
 3. Reference images as `/photo/filename.jpg`
-
-### Admin Panel (Akasha)
-- Access at `/akasha/` with Basic Auth
-- Static files in `frontend/static/akasha/`
-- Credentials: `htpasswd -nb admin password > nginx/.htpasswd`
