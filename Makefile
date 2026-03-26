@@ -85,7 +85,7 @@ prepare:
 	$(COMPOSE) run --rm --no-deps $(SERVICE) cargo run --release --bin prepare -- --all
 
 db-shell:
-	$(COMPOSE) exec db psql -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+	$(COMPOSE) exec db bash
 
 db-logs:
 	$(COMPOSE) logs -f db
