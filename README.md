@@ -1,8 +1,8 @@
 # 食事記録ブログサイトの構築
-本リポジトリは検索機能付きのブログリポジトリです。
+本リポジトリは検索機能付きのブログリポジトリです。[こちら](https://www.fukuyoka.dev)にて公開しています。
 以下の機能を提供します。
 
-1. cloudflare tunnel : cloudflare経由でインターネット接続(グローバルIPを非公開のままホスティングできます)
+1. cloudflare tunnel : cloudflareを経由したインターネットのゲート(グローバルIPを非公開のままホスティングできます)
 2. nginx : APIサーバへのプロキシ、もしくはフロントエンドへのプロキシ
 3. hugo(Frontend描画) : 記事(html)の描画
 4. api(Rust) : 検索APIの提供
@@ -69,17 +69,6 @@ graph LR
     style frontend fill:#ff75a0,color:#000
     style db fill:#336791,color:#fff
 ```
-
-## ポート一覧
-
-| サービス | ポート | 用途 |
-|---------|-------|------|
-| fukuyoka_proxy (nginx) | 80 | エントリポイント |
-| fukuyoka_proxy (nginx) | 51841 | ヘルスチェック (dev時は外部公開) |
-| fukuyoka_proxy (nginx) | 11301 | www.fukuyoka.dev へリダイレクト |
-| fukuyoka_app (Rust) | 80 | API サーバー |
-| fukuyoka_frontend (Hugo) | 1313 | Hugo dev server |
-| fukuyoka_db (PostgreSQL) | 5432 | データベース |
 
 ## Nginxのルーティング詳細
 
