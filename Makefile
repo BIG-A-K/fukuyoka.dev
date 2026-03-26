@@ -9,7 +9,7 @@ CURRENT_USER := $(shell whoami)
 CURRENT_GROUP := $(shell id -gn)
 BUILD_ARGS := --build-arg UID=$(CURRENT_UID) --build-arg GID=$(CURRENT_GID) --build-arg USER=$(CURRENT_USER) --build-arg GROUP=$(CURRENT_GROUP)
 
-.PHONY: build up down logs in embed ps hugo clean help \
+.PHONY: build up down logs in prepare ps hugo clean help \
         restart restart-proxy restart-db \
         db-shell db-logs \
         dev dev-build dev-down dev-logs
@@ -23,7 +23,7 @@ help:
 	@echo "  restart-proxy  - Reload nginx config"
 	@echo "  restart-db     - Restart the database container"
 	@echo "  in             - Access the app container shell"
-	@echo "  embed          - Build and run embedding binary in container"
+	@echo "  prepare        - Generate posts.json for PostgreSQL import"
 	@echo "  logs           - View logs of all containers"
 	@echo "  ps             - List running containers"
 	@echo "  hugo           - Build the frontend with Hugo"
@@ -85,8 +85,8 @@ logs:
 hugo:
 	$(COMPOSE) exec -it fukuyoka_frontend hugo
 
-embed:
-	$(COMPOSE) exec $(SERVICE) bash -c "cargo build --release --bin embed && ./target/release/embed --all"
+prepare:
+	$(COMPOSE) exec $(SERVICE) bash -c "cargo build --release --bin prepare && ./target/release/prepare --all"
 
 db-shell:
 	$(COMPOSE) exec db psql -U $${POSTGRES_USER} -d $${POSTGRES_DB}
