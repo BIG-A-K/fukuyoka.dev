@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showStatus(data.error || '検索に失敗しました', 'error');
       }
     } catch (error) {
-      showStatus('エラー: ' + error.message, 'error');
+      showStatus('エラー: サーバーに接続できませんでした', 'error');
     }
   });
 
