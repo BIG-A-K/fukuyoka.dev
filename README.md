@@ -10,19 +10,30 @@
 
 
 ## 起動手順
-本リポジトリはMakefileによってあらゆる操作をラッパー処理しています
+本リポジトリはMakefileによってDockerや形態素解析などの操作をラッパーしています。
 
 1. `template.env`から`.env`を作成: cloudflare tunnelとPostgreSQLの接続に必要です
+```sh
+cp template.env .env
+```
+を実行した後、`.env`の中身を適切に編集してください。
+
 2. 文章の埋め込み・形態素解析を実行: 検索に使えるように文章を処理してjson(`./posts.json`)で保管します。
 ```sh
-make build
+make dev-build
+# make build # 本番環境の場合
 make prepare
 ```
 3. コンテナの立ち上げ
 ```sh
-make up
+make dev
+# make up #本番環境の場合
 ```
-4. (optional) 他にも開発向けのターゲットを用意しています
+4. コンテナの終了
+```sh
+make down
+```
+5. (optional) 他にも開発向けのターゲットを用意しています
 ```sh
 make (help)
 ```
