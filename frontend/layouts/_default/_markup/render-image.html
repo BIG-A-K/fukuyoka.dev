@@ -1,16 +1,53 @@
 {{/*
-  Markdown image render hook: wraps image with figure + figcaption.
-  Caption priority: Title ("..." in Markdown) > Alt text
-  Usage in Markdown: ![alt text](/path.jpg "caption here")
+  Markdown image render hook.
+  - 自前 R2 (/photo/, photo.fukuyoka.dev, www.fukuyoka.dev/photo/) のみビルド時 WebP 化
+  - data-fullsrc に原寸URLを持たせ、image-modal.js が拡大時に取得
+  - 外部サイトの画像はそのまま (ビルドの外部依存を避ける)
+  Caption: Title ("...") > Alt
 */}}
-{{ $src := .Destination | safeURL }}
+{{ $rawSrc := .Destination }}
 {{ $alt := .Text | plainify }}
 {{ $title := .Title | plainify }}
 
+{{ $fetchURL := partial "photo-fetch-url.html" $rawSrc }}
+
+{{ $displaySrc := $rawSrc }}
+{{ with $fetchURL }}
+  {{ $res := try (resources.GetRemote .) }}
+  {{ if $res.Err }}
+    {{ warnf "image fetch failed: %s (%s)" . $res.Err }}
+  {{ else }}
+    {{ with $res.Value }}
+      {{/* 元の比率を維持。元画像が幅1200未満なら拡大せずフォーマット変換のみ */}}
+      {{ $spec := "resize 1200x webp q78" }}
+      {{ $width := try .Width }}
+      {{ if $width.Err }}
+        {{ warnf "image width check failed: %s (%s)" $fetchURL $width.Err }}
+      {{ else }}
+        {{ if le $width.Value 1200 }}
+          {{ $spec = "webp q78" }}
+        {{ end }}
+        {{ $img := try (.Process $spec) }}
+        {{ if $img.Err }}
+          {{ warnf "image process failed: %s (%s)" $fetchURL $img.Err }}
+        {{ else }}
+          {{ with $img.Value }}
+            {{ $displaySrc = .RelPermalink }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
 <figure class="md-image">
-  <img src="{{ $src }}" alt="{{ $alt }}"{{ with $title }} title="{{ . }}"{{ end }} />
+  <img src="{{ $displaySrc }}"
+       data-fullsrc="{{ $rawSrc }}"
+       alt="{{ $alt }}"
+       loading="lazy"
+       decoding="async"
+       {{ with $title }}title="{{ . }}"{{ end }} />
   {{ if or $title $alt }}
     <figcaption>{{ if $title }}{{ $title }}{{ else }}{{ $alt }}{{ end }}</figcaption>
   {{ end }}
-  </figure>
-
+</figure>

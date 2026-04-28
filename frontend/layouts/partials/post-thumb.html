@@ -1,11 +1,7 @@
 {{/*
   Renders a square thumbnail for a post.
-  Preferred: set front matter `thumbnail` to a path or URL.
-  Fallback: use site favicon.
-  Examples:
-    thumbnail = "/images/sushi.jpg"
-    thumbnail = "images/sushi.jpg"   (will be normalized to start with /)
-    thumbnail = "https://example.com/cover.jpg"
+  - front matter `thumbnail` を WebP 小サイズに変換して配信 (ビルド時)
+  - 取得失敗 / favicon フォールバックは原URLのまま
 */}}
 
 {{ $imgURL := "" }}
@@ -21,7 +17,38 @@
   {{ $imgURL = "/favicon.png" }}
 {{ end }}
 
-<img src="{{ $imgURL }}" alt="{{ $.Title }}" loading="lazy" />
+{{ $fetchURL := partial "photo-fetch-url.html" $imgURL }}
+
+{{ $displaySrc := $imgURL }}
+{{ with $fetchURL }}
+  {{ $res := try (resources.GetRemote .) }}
+  {{ if $res.Err }}
+    {{ warnf "thumbnail fetch failed: %s (%s)" . $res.Err }}
+  {{ else }}
+    {{ with $res.Value }}
+      {{/* 元の比率を維持。CSS の object-fit: cover で表示時に正方形へ整形される */}}
+      {{ $spec := "resize 600x webp q72" }}
+      {{ $width := try .Width }}
+      {{ if $width.Err }}
+        {{ warnf "thumbnail width check failed: %s (%s)" $fetchURL $width.Err }}
+      {{ else }}
+        {{ if le $width.Value 600 }}
+          {{ $spec = "webp q72" }}
+        {{ end }}
+        {{ $thumb := try (.Process $spec) }}
+        {{ if $thumb.Err }}
+          {{ warnf "thumbnail process failed: %s (%s)" $fetchURL $thumb.Err }}
+        {{ else }}
+          {{ with $thumb.Value }}
+            {{ $displaySrc = .RelPermalink }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+<img src="{{ $displaySrc }}" alt="{{ $.Title }}" loading="lazy" decoding="async" />
 <div class="thumb-caption">
   <p class="thumb-title">{{ $.Title }}</p>
   <p class="thumb-meta">
@@ -36,5 +63,5 @@
       {{ end }}
     </div>
   {{ end }}
-  
+
 </div>

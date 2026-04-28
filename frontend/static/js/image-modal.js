@@ -55,7 +55,7 @@
       img.addEventListener('click', (ev) => {
         // Avoid navigating if image is inside a link
         if (img.closest('a')) ev.preventDefault();
-        const src = img.currentSrc || img.src;
+        const src = img.dataset.fullsrc || img.currentSrc || img.src;
         const fig = img.closest('figure');
         const captionText = fig && fig.querySelector('figcaption') ? fig.querySelector('figcaption').textContent : img.alt;
         openModal(src, captionText);
