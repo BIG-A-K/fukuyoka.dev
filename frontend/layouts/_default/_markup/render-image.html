@@ -9,15 +9,7 @@
 {{ $alt := .Text | plainify }}
 {{ $title := .Title | plainify }}
 
-{{/* 自前画像のみを R2 origin の絶対URLに正規化 */}}
-{{ $fetchURL := "" }}
-{{ if hasPrefix $rawSrc "/photo/" }}
-  {{ $fetchURL = printf "https://photo.fukuyoka.dev%s" (strings.TrimPrefix "/photo" $rawSrc) }}
-{{ else if hasPrefix $rawSrc "https://www.fukuyoka.dev/photo/" }}
-  {{ $fetchURL = printf "https://photo.fukuyoka.dev%s" (strings.TrimPrefix "https://www.fukuyoka.dev/photo" $rawSrc) }}
-{{ else if hasPrefix $rawSrc "https://photo.fukuyoka.dev/" }}
-  {{ $fetchURL = $rawSrc }}
-{{ end }}
+{{ $fetchURL := partial "photo-fetch-url.html" $rawSrc }}
 
 {{ $displaySrc := $rawSrc }}
 {{ with $fetchURL }}
@@ -28,18 +20,29 @@
     {{ with $res.Value }}
       {{/* 元の比率を維持。元画像が幅1200未満なら拡大せずフォーマット変換のみ */}}
       {{ $spec := "resize 1200x webp q78" }}
-      {{ if le .Width 1200 }}
-        {{ $spec = "webp q78" }}
+      {{ $width := try .Width }}
+      {{ if $width.Err }}
+        {{ warnf "image width check failed: %s (%s)" $fetchURL $width.Err }}
+      {{ else }}
+        {{ if le $width.Value 1200 }}
+          {{ $spec = "webp q78" }}
+        {{ end }}
+        {{ $img := try (.Process $spec) }}
+        {{ if $img.Err }}
+          {{ warnf "image process failed: %s (%s)" $fetchURL $img.Err }}
+        {{ else }}
+          {{ with $img.Value }}
+            {{ $displaySrc = .RelPermalink }}
+          {{ end }}
+        {{ end }}
       {{ end }}
-      {{ $img := .Process $spec }}
-      {{ $displaySrc = $img.RelPermalink }}
     {{ end }}
   {{ end }}
 {{ end }}
 
 <figure class="md-image">
-  <img src="{{ $displaySrc | safeURL }}"
-       data-fullsrc="{{ $rawSrc | safeURL }}"
+  <img src="{{ $displaySrc }}"
+       data-fullsrc="{{ $rawSrc }}"
        alt="{{ $alt }}"
        loading="lazy"
        decoding="async"

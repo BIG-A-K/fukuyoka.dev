@@ -1,0 +1,10 @@
+{{ $src := . }}
+{{ $fetchURL := "" }}
+{{ if hasPrefix $src "/photo/" }}
+  {{ $fetchURL = printf "https://photo.fukuyoka.dev%s" (strings.TrimPrefix "/photo" $src) }}
+{{ else if hasPrefix $src "https://www.fukuyoka.dev/photo/" }}
+  {{ $fetchURL = printf "https://photo.fukuyoka.dev%s" (strings.TrimPrefix "https://www.fukuyoka.dev/photo" $src) }}
+{{ else if hasPrefix $src "https://photo.fukuyoka.dev/" }}
+  {{ $fetchURL = $src }}
+{{ end }}
+{{ return $fetchURL }}
