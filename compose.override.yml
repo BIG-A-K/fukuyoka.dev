@@ -2,11 +2,17 @@ services:
   fukuyoka_frontend:
     environment:
       HUGO_ENV: development
-    command: server --bind 0.0.0.0 --port 1313 --baseURL http://localhost:51841 --appendPort=false
+    command: --watch --baseURL http://localhost:51841
+    restart: unless-stopped
 
   fukuyoka_proxy:
     ports:
       - "51841:80"
+    depends_on:
+      fukuyoka_frontend:
+        condition: service_started
+      fukuyoka_app:
+        condition: service_started
 
   cloudflared:
     profiles:

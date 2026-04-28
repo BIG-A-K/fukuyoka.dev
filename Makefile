@@ -79,7 +79,7 @@ logs:
 	$(COMPOSE) logs -f
 
 hugo:
-	$(COMPOSE) exec -it fukuyoka_frontend hugo
+	$(COMPOSE) run --rm fukuyoka_frontend --minify --baseURL https://${DOMAIN}
 
 prepare:
 	$(COMPOSE) run --rm --no-deps $(SERVICE) cargo run --release --bin prepare -- --all
