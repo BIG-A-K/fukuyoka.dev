@@ -79,7 +79,7 @@ logs:
 	$(COMPOSE) logs -f
 
 hugo:
-	$(COMPOSE) exec -it fukuyoka_frontend hugo
+	$(COMPOSE) run --rm fukuyoka_frontend --minify
 
 prepare:
 	$(COMPOSE) run --rm --no-deps $(SERVICE) cargo run --release --bin prepare -- --all
@@ -89,4 +89,3 @@ db-shell:
 
 db-logs:
 	$(COMPOSE) logs -f db
-
