@@ -26,6 +26,10 @@
     --tag-bg: #f0f3f6;
     --tag-border: #d1d5da;
     --tag-label: #1a1d25;
+    /* blockquote */
+    --quote-bg: #ececec;
+    --quote-border: #999;
+    --quote-color: #444;
 }
 html.dark {
     color-scheme: dark;
@@ -55,6 +59,10 @@ html.dark {
     --tag-bg: #21262d;
     --tag-border: #444c56;
     --tag-label: #c9d1d9;
+    /* blockquote */
+    --quote-bg: #2a2e33;
+    --quote-border: #6e7681;
+    --quote-color: #c9d1d9;
 }
 
 html {
@@ -179,6 +187,19 @@ img {
 .post-body img {
     max-width: 60%;
     max-height: 400px;
+}
+
+/* Markdown blockquote */
+.post-body blockquote {
+    background: var(--quote-bg);
+    color: var(--quote-color);
+    border-left: 4px solid var(--quote-border);
+    margin: 1.2rem 0;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+}
+.post-body blockquote p {
+    margin: 0.4rem 0;
 }
 
 /* Markdown image caption */
