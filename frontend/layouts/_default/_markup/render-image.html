@@ -19,13 +19,13 @@
   {{ else }}
     {{ with $res.Value }}
       {{/* 元の比率を維持。元画像が幅1200未満なら拡大せずフォーマット変換のみ */}}
-      {{ $spec := "resize 1200x webp q78" }}
+      {{ $spec := "resize 1200x webp q78 autoOrient" }}
       {{ $width := try .Width }}
       {{ if $width.Err }}
         {{ warnf "image width check failed: %s (%s)" $fetchURL $width.Err }}
       {{ else }}
         {{ if le $width.Value 1200 }}
-          {{ $spec = "webp q78" }}
+          {{ $spec = "webp q78 autoOrient" }}
         {{ end }}
         {{ $img := try (.Process $spec) }}
         {{ if $img.Err }}

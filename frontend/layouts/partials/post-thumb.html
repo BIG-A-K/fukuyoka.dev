@@ -27,13 +27,13 @@
   {{ else }}
     {{ with $res.Value }}
       {{/* 元の比率を維持。CSS の object-fit: cover で表示時に正方形へ整形される */}}
-      {{ $spec := "resize 600x webp q72" }}
+      {{ $spec := "resize 600x webp q72 autoOrient" }}
       {{ $width := try .Width }}
       {{ if $width.Err }}
         {{ warnf "thumbnail width check failed: %s (%s)" $fetchURL $width.Err }}
       {{ else }}
         {{ if le $width.Value 600 }}
-          {{ $spec = "webp q72" }}
+          {{ $spec = "webp q72 autoOrient" }}
         {{ end }}
         {{ $thumb := try (.Process $spec) }}
         {{ if $thumb.Err }}
