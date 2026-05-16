@@ -18,21 +18,32 @@
     {{ warnf "image fetch failed: %s (%s)" . $res.Err }}
   {{ else }}
     {{ with $res.Value }}
-      {{/* 元の比率を維持。元画像が幅1200未満なら拡大せずフォーマット変換のみ */}}
-      {{ $spec := "resize 1200x webp q78 autoOrient" }}
-      {{ $width := try .Width }}
-      {{ if $width.Err }}
-        {{ warnf "image width check failed: %s (%s)" $fetchURL $width.Err }}
+      {{/*
+        Hugo v0.154 では Process spec の autoOrient トークンが効かないため、
+        EXIF Orientation を反映するには images.Filter images.AutoOrient を先に通す必要がある
+      */}}
+      {{ $oriented := try (. | images.Filter images.AutoOrient) }}
+      {{ if $oriented.Err }}
+        {{ warnf "image autoOrient failed: %s (%s)" $fetchURL $oriented.Err }}
       {{ else }}
-        {{ if le $width.Value 1200 }}
-          {{ $spec = "webp q78 autoOrient" }}
-        {{ end }}
-        {{ $img := try (.Process $spec) }}
-        {{ if $img.Err }}
-          {{ warnf "image process failed: %s (%s)" $fetchURL $img.Err }}
-        {{ else }}
-          {{ with $img.Value }}
-            {{ $displaySrc = .RelPermalink }}
+        {{ with $oriented.Value }}
+          {{/* 元の比率を維持。回転後の幅が1200未満なら拡大せずフォーマット変換のみ */}}
+          {{ $spec := "resize 1200x webp q78" }}
+          {{ $width := try .Width }}
+          {{ if $width.Err }}
+            {{ warnf "image width check failed: %s (%s)" $fetchURL $width.Err }}
+          {{ else }}
+            {{ if le $width.Value 1200 }}
+              {{ $spec = "webp q78" }}
+            {{ end }}
+            {{ $img := try (.Process $spec) }}
+            {{ if $img.Err }}
+              {{ warnf "image process failed: %s (%s)" $fetchURL $img.Err }}
+            {{ else }}
+              {{ with $img.Value }}
+                {{ $displaySrc = .RelPermalink }}
+              {{ end }}
+            {{ end }}
           {{ end }}
         {{ end }}
       {{ end }}

@@ -26,21 +26,32 @@
     {{ warnf "thumbnail fetch failed: %s (%s)" . $res.Err }}
   {{ else }}
     {{ with $res.Value }}
-      {{/* 元の比率を維持。CSS の object-fit: cover で表示時に正方形へ整形される */}}
-      {{ $spec := "resize 600x webp q72 autoOrient" }}
-      {{ $width := try .Width }}
-      {{ if $width.Err }}
-        {{ warnf "thumbnail width check failed: %s (%s)" $fetchURL $width.Err }}
+      {{/*
+        Hugo v0.154 では Process spec の autoOrient トークンが効かないため、
+        EXIF Orientation を反映するには images.Filter images.AutoOrient を先に通す必要がある
+      */}}
+      {{ $oriented := try (. | images.Filter images.AutoOrient) }}
+      {{ if $oriented.Err }}
+        {{ warnf "thumbnail autoOrient failed: %s (%s)" $fetchURL $oriented.Err }}
       {{ else }}
-        {{ if le $width.Value 600 }}
-          {{ $spec = "webp q72 autoOrient" }}
-        {{ end }}
-        {{ $thumb := try (.Process $spec) }}
-        {{ if $thumb.Err }}
-          {{ warnf "thumbnail process failed: %s (%s)" $fetchURL $thumb.Err }}
-        {{ else }}
-          {{ with $thumb.Value }}
-            {{ $displaySrc = .RelPermalink }}
+        {{ with $oriented.Value }}
+          {{/* 元の比率を維持。CSS の object-fit: cover で表示時に正方形へ整形される */}}
+          {{ $spec := "resize 600x webp q72" }}
+          {{ $width := try .Width }}
+          {{ if $width.Err }}
+            {{ warnf "thumbnail width check failed: %s (%s)" $fetchURL $width.Err }}
+          {{ else }}
+            {{ if le $width.Value 600 }}
+              {{ $spec = "webp q72" }}
+            {{ end }}
+            {{ $thumb := try (.Process $spec) }}
+            {{ if $thumb.Err }}
+              {{ warnf "thumbnail process failed: %s (%s)" $fetchURL $thumb.Err }}
+            {{ else }}
+              {{ with $thumb.Value }}
+                {{ $displaySrc = .RelPermalink }}
+              {{ end }}
+            {{ end }}
           {{ end }}
         {{ end }}
       {{ end }}
