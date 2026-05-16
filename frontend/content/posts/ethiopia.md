@@ -18,7 +18,8 @@ thumbnail = 'https://photo.fukuyoka.dev/ethiopia/curry.jpg'
 ![蒸しじゃがいも: スパイス塩を付けて食べると美味しい](https://photo.fukuyoka.dev/ethiopia/potato.jpg)
 
 このじゃがいも、おかわりし放題です。しかし食べすぎには注意。
-なぜならカレーがかなりの量で出てきます。
+なぜならカレーがかなりの量で出てくるからです。
+2,3年前に行ったときは不作でおかわりできなかった記憶があるのですが、もうできるっぽい。美味しいですね、芋。
 
 ![チキンカレー：辛さ普通なのにめちゃ辛い](https://photo.fukuyoka.dev/ethiopia/curry.jpg)
 
