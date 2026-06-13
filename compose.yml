@@ -5,6 +5,9 @@ networks:
       config:
         - subnet: 192.168.100.0/24
 
+volumes:
+  hf_cache:
+
 services:
   fukuyoka_app:
     image: fukuyoka_app:latest
@@ -12,10 +15,13 @@ services:
       dockerfile: docker/Dockerfile
     env_file:
       - .env
+    environment:
+      HF_HOME: /hf-cache
     container_name: fukuyoka_app
     init: true
     volumes:
       - ./:/app
+      - hf_cache:/hf-cache
     working_dir: /app
     command: bash -c "/app/target/release/api || (cargo build --release && /app/target/release/api)"
     restart: unless-stopped
