@@ -4,7 +4,7 @@ date = 2026-06-13T14:54:04+09:00
 draft = false
 description = 'つばめグリル'
 tags = ['肉類','おすすめ']
-categories = ['ふくよか']
+categories = ['すこやか']
 thumbnail = 'https://photo.fukuyoka.dev/tsubame-grill/humberg.jpg'
 +++
 

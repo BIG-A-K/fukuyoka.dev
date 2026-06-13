@@ -4,7 +4,7 @@ date = 2026-05-16T22:51:28+09:00
 draft = false
 description = ''
 tags = ['海鮮']
-categories = ['ふくよか']
+categories = ['すこやか']
 thumbnail = 'https://photo.fukuyoka.dev/irochaya/noren.jpg'
 +++
 
