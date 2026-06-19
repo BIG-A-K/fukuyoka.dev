@@ -67,7 +67,7 @@
       <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006/01/02" }}</time>
     {{ end }}
   </p>
-  {{ with .Params.tags }}
+  {{ with .Params.menus }}
     <div class="thumb-tags">
       {{ range . }}
           <span class="thumb-tag">#{{ . }}</span>

@@ -3,8 +3,8 @@ title = '囲炉茶屋: 熱海の海鮮'
 date = 2026-05-16T22:51:28+09:00
 draft = false
 description = ''
-tags = ['海鮮']
-categories = ['すこやか']
+menus = ['海鮮']
+genres = ['すこやか']
 thumbnail = 'https://photo.fukuyoka.dev/irochaya/noren.jpg'
 +++
 

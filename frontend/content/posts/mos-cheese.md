@@ -3,8 +3,8 @@ title = 'とびきりチーズバーガー in モスバーガー'
 date = 2025-09-26T17:36:12+09:00
 draft = false
 description = ''
-tags = ['ハンバーガー','サラダ']
-categories = ['日記','すこやか']
+menus = ['ハンバーガー','サラダ']
+genres = ['日記','すこやか']
 thumbnail = '/photo/mosburger/cheese/burger.jpg'
 +++
 

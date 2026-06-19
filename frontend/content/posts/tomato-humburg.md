@@ -3,8 +3,8 @@ title = 'うまトマハンバーグを食べてみた'
 date = 2025-10-03T01:11:15+09:00
 draft = false
 description = ''
-tags = ['おすすめ','肉類']
-categories = ['ふくよか']
+menus = ['肉類']
+genres = ['おすすめ','ふくよか']
 thumbnail = '/photo/Tomato_humburg.jpeg'
 +++
 

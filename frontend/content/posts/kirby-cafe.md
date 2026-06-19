@@ -3,8 +3,8 @@ title = 'Kirby Cafe'
 date = 2026-02-12T17:16:34+09:00
 draft = false
 description = ''
-tags = ['オムライス']
-categories = ['すこやか']
+menus = ['オムライス']
+genres = ['すこやか']
 thumbnail = 'https://photo.fukuyoka.dev/kirby-cafe/IMG_6531.jpeg'
 +++
 

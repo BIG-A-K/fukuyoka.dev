@@ -3,8 +3,8 @@ title = 'エチオピア'
 date = 2026-05-16T21:24:47+09:00
 draft = false
 description = ''
-tags = ['カレー','日記']
-categories = ['ふくよか','日記']
+menus = ['カレー','日記']
+genres = ['ふくよか','日記']
 thumbnail = 'https://photo.fukuyoka.dev/ethiopia/curry.jpg'
 +++
 

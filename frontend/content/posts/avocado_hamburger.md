@@ -3,8 +3,8 @@ title = 'アボカドバーガー in モスバーガー'
 date = 2025-11-20T23:21:26+09:00
 draft = false
 description = ''
-tags = ['おすすめ','ハンバーガー']
-categories = ['すこやか']
+menus = ['ハンバーガー']
+genres = ['おすすめ','すこやか']
 thumbnail = '/photo/mosburger/avocado/IMG_6306.jpeg'
 +++
 

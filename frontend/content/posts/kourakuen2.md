@@ -3,8 +3,8 @@ title = '幸楽苑の担々麺を食べた'
 date = 2025-12-24T23:27:55+09:00
 draft = false
 description = ''
-tags = ['麺類']
-categories = ['ふくよか']
+menus = ['麺類']
+genres = ['ふくよか']
 thumbnail = '/photo/kourakuen_tantanmen.jpeg'
 +++
 

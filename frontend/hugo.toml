@@ -3,6 +3,10 @@ languageCode = 'ja'
 title = '幸者のふくよか日記'
 theme = 'fukuyoka'
 
+[taxonomies]
+genre = 'genres'
+menu = 'menus'
+
 [Params]
 author = 'kuroda yukijya'
 email = 'yukijya@big-a-k.com'

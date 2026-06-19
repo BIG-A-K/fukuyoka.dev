@@ -3,8 +3,8 @@ title = 'なりたけ again'
 date = 2026-01-24T19:56:51+09:00
 draft = false
 description = ''
-tags = ['おすすめ','麺類']
-categories = ['ふくよか']
+menus = ['麺類']
+genres = ['おすすめ','ふくよか']
 thumbnail = 'https://photo.fukuyoka.dev/naritake_miso.jpg'
 +++
 

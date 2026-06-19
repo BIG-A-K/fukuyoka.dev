@@ -3,8 +3,8 @@ title = '弟者カレー'
 date = 2025-10-31T20:57:24+09:00
 draft = false
 description = ''
-tags = ['カレー']
-categories = ['日記']
+menus = ['カレー']
+genres = ['日記']
 thumbnail = '/photo/cocoichi/IMG_6229.jpeg'
 +++
 

@@ -3,8 +3,8 @@ title = 'ゴールドラッシュ'
 date = 2026-05-04T23:31:43+09:00
 draft = false
 description = ''
-tags = ['おすすめ','肉類']
-categories = ['ふくよか']
+menus = ['肉類']
+genres = ['おすすめ','ふくよか']
 thumbnail = 'https://photo.fukuyoka.dev/goldrush/humberg.jpg'
 +++
 

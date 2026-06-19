@@ -3,8 +3,8 @@ title = '君はWelch’sの魅力に気がついているのかね？(サムネ�
 date = 2025-09-28T18:27:43+09:00
 draft = false
 description = ''
-tags = ['日記']
-categories = ['すこやか','日記']
+menus = ['日記']
+genres = ['すこやか','日記']
 thumbnail = '/photo/welch0.jpg'
 +++
 

@@ -3,8 +3,8 @@ title = 'デニーズのオムライス'
 date = 2025-12-02T15:56:31+09:00
 draft = false
 description = ''
-tags = ['オムライス']
-categories = ['ふくよか']
+menus = ['オムライス']
+genres = ['ふくよか']
 thumbnail = '/photo/dennys/IMG_6312.jpeg'
 +++
 

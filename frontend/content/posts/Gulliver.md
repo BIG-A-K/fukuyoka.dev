@@ -3,8 +3,8 @@ title = 'ガリバーバーグ 【びっくりドンキー】'
 date = 2025-10-24T15:51:32+09:00
 draft = false
 description = ''
-tags = ['肉類']
-categories = ['ふくよか']
+menus = ['肉類']
+genres = ['ふくよか']
 thumbnail = '/photo/gulliver.jpeg'
 +++
 

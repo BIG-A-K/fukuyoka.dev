@@ -3,8 +3,8 @@ title = 'サブウェイに行ってみた！！！'
 date = 2025-12-24T23:08:12+09:00
 draft = false
 description = ''
-tags = ['サラダ']
-categories = ['すこやか']
+menus = ['サラダ']
+genres = ['すこやか']
 thumbnail = '/photo/subway/IMG_6340.jpeg'
 +++
 

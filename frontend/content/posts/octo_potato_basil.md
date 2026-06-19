@@ -3,8 +3,8 @@ title = 'タコとブロッコリーバジルサラダ'
 date = 2025-10-04T23:43:33+09:00
 draft = false
 description = ''
-tags = ['サラダ']
-categories = ['すこやか']
+menus = ['サラダ']
+genres = ['すこやか']
 thumbnail = '/photo/20251005/IMG_6185.jpeg'
 +++
 

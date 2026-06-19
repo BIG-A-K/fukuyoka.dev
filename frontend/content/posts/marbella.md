@@ -3,8 +3,8 @@ title = '本場スペインのパエリア'
 date = 2026-03-18T01:07:32+09:00
 draft = false
 description = ''
-tags = ['海鮮']
-categories = ['ふくよか']
+menus = ['海鮮']
+genres = ['ふくよか']
 thumbnail = 'https://photo.fukuyoka.dev/marbella/IMG_6786.JPG'
 +++
 

@@ -10,8 +10,8 @@ pub struct Post {
     pub title: String,
     pub date: String,
     pub thumbnail: Option<String>,
-    pub tags: Vec<String>,
-    pub categories: Vec<String>,
+    pub menus: Vec<String>,
+    pub genres: Vec<String>,
     pub body: String,
     pub alt_texts: Vec<String>,
 }
@@ -44,8 +44,8 @@ pub fn parse_frontmatter(
     let body = caps[2].trim().to_string();
 
     let mut metadata = HashMap::new();
-    let mut tags = Vec::new();
-    let mut categories = Vec::new();
+    let mut menus = Vec::new();
+    let mut genres = Vec::new();
 
     for line in frontmatter_str.lines() {
         if let Some((key, value)) = line.split_once('=') {
@@ -62,8 +62,8 @@ pub fn parse_frontmatter(
                     .collect();
 
                 match key {
-                    "tags" => tags = items,
-                    "categories" => categories = items,
+                    "menus" => menus = items,
+                    "genres" => genres = items,
                     _ => {}
                 }
             } else {
@@ -77,7 +77,7 @@ pub fn parse_frontmatter(
         }
     }
 
-    (metadata, tags, categories, body)
+    (metadata, menus, genres, body)
 }
 
 /// Extract alt texts from markdown image syntax
@@ -110,7 +110,7 @@ pub fn clean_markdown(text: &str) -> String {
 /// Load a single post from a markdown file
 pub fn load_post(filepath: &Path) -> Option<Post> {
     let content = fs::read_to_string(filepath).ok()?;
-    let (metadata, tags, categories, body) = parse_frontmatter(&content);
+    let (metadata, menus, genres, body) = parse_frontmatter(&content);
     let alt_texts = extract_alt_texts(&body);
     let clean_body = clean_markdown(&body);
 
@@ -125,8 +125,8 @@ pub fn load_post(filepath: &Path) -> Option<Post> {
         title: metadata.get("title").cloned().unwrap_or_default(),
         date: metadata.get("date").cloned().unwrap_or_default(),
         thumbnail: metadata.get("thumbnail").cloned(),
-        tags,
-        categories,
+        menus,
+        genres,
         body: clean_body,
         alt_texts,
     })
@@ -153,13 +153,13 @@ mod tests {
         let content = r#"+++
 title = "Test Post"
 date = "2024-01-01"
-tags = ['tag1', 'tag2']
+menus = ['tag1', 'tag2']
 +++
 This is the body."#;
 
-        let (metadata, tags, _, body) = parse_frontmatter(content);
+        let (metadata, menus, _, body) = parse_frontmatter(content);
         assert_eq!(metadata.get("title").unwrap(), "Test Post");
-        assert_eq!(tags, vec!["tag1", "tag2"]);
+        assert_eq!(menus, vec!["tag1", "tag2"]);
         assert_eq!(body, "This is the body.");
     }
 

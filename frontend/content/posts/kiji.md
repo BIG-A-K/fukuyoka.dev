@@ -3,8 +3,8 @@ title = 'お好み焼 きじ'
 date = 2026-04-09T14:50:04+09:00
 draft = false
 description = ''
-tags = ['おすすめ','関西']
-categories = ['ふくよか']
+menus = ['関西']
+genres = ['おすすめ','ふくよか']
 thumbnail = 'https://photo.fukuyoka.dev/kiji/IMG_6966.JPG'
 +++
 

@@ -3,8 +3,8 @@ title = '真のダブルチーズバーガーをみよ！'
 date = 2025-10-06T14:27:57+09:00
 draft = false
 description = ''
-tags = ['ハンバーガー']
-categories = ['ふくよか']
+menus = ['ハンバーガー']
+genres = ['ふくよか']
 thumbnail = '/photo/20251005/IMG_6190.jpeg'
 math = true
 +++

@@ -3,8 +3,8 @@ title = 'なりたけに行った'
 date = 2026-01-21T13:45:37+09:00
 draft = false
 description = ''
-tags = ['麺類']
-categories = ['ふくよか']
+menus = ['麺類']
+genres = ['ふくよか']
 thumbnail = 'https://photo.fukuyoka.dev/naritake-shoyu.jpeg'
 +++
 

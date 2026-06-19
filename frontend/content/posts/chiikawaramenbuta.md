@@ -3,8 +3,8 @@ title = 'ちいかわラーメン豚'
 date = 2025-11-15T20:54:16+09:00
 draft = false
 description = ''
-tags = ['麺類']
-categories = ['日記']
+menus = ['麺類']
+genres = ['日記']
 thumbnail = '/photo/chiikawaramenbuta/IMG_6286.jpeg'
 +++
 

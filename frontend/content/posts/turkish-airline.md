@@ -3,8 +3,8 @@ title = 'Turkish Airlineの機内食'
 date = 2026-03-07T23:38:43+09:00
 draft = false
 description = ''
-tags = ['その他']
-categories = ['日記']
+menus = ['その他']
+genres = ['日記']
 thumbnail = 'https://www.turkishairlines.com/favicon.ico'
 +++
 
