@@ -1,7 +1,7 @@
 use candle_core::{DType, Device, Tensor};
 use candle_nn::VarBuilder;
 use candle_transformers::models::bert::{BertModel, Config};
-use hf_hub::api::sync::ApiBuilder;
+use hf_hub::{Cache, Repo, api::sync::ApiBuilder};
 use tokenizers::{Tokenizer, TruncationParams};
 
 pub struct EmbeddingModel {
@@ -13,11 +13,29 @@ pub struct EmbeddingModel {
 impl EmbeddingModel {
     pub fn new(model_id: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let device = Device::Cpu;
-        let api = ApiBuilder::new().with_progress(true).build()?;
-        let repo = api.model(model_id.to_string());
-        let model_file = repo.get("model.safetensors")?;
-        let config_file = repo.get("config.json")?;
-        let tokenizer_file = repo.get("tokenizer.json")?;
+
+        let cache = Cache::default();
+        let cached = cache.repo(Repo::model(model_id.to_string()));
+        let (model_file, config_file, tokenizer_file) = match (
+            cached.get("model.safetensors"),
+            cached.get("config.json"),
+            cached.get("tokenizer.json"),
+        ) {
+            (Some(m), Some(c), Some(t)) => {
+                println!("Using cached model files");
+                (m, c, t)
+            }
+            _ => {
+                println!("Downloading model files...");
+                let api = ApiBuilder::new().with_progress(true).build()?;
+                let repo = api.model(model_id.to_string());
+                (
+                    repo.get("model.safetensors")?,
+                    repo.get("config.json")?,
+                    repo.get("tokenizer.json")?,
+                )
+            }
+        };
 
         // モデルと設定の読み込み
         let tensors = candle_core::safetensors::load(model_file, &device)?;
