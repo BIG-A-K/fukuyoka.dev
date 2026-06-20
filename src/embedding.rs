@@ -14,7 +14,7 @@ impl EmbeddingModel {
     pub fn new(model_id: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let device = Device::Cpu;
 
-        let cache = Cache::default();
+        let cache = Cache::from_env();
         let cached = cache.repo(Repo::model(model_id.to_string()));
         let (model_file, config_file, tokenizer_file) = match (
             cached.get("model.safetensors"),
@@ -27,7 +27,7 @@ impl EmbeddingModel {
             }
             _ => {
                 println!("Downloading model files...");
-                let api = ApiBuilder::new().with_progress(true).build()?;
+                let api = ApiBuilder::from_env().with_progress(true).build()?;
                 let repo = api.model(model_id.to_string());
                 (
                     repo.get("model.safetensors")?,
