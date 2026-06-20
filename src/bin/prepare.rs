@@ -1,5 +1,4 @@
 use clap::Parser;
-use regex::Regex;
 use serde::Serialize;
 use std::path::PathBuf;
 
@@ -43,44 +42,13 @@ struct PreparedPost {
     search_text: String,
 }
 
-/// Extract alt texts from markdown body
-fn extract_alt_texts(body: &str) -> Vec<String> {
-    let re = Regex::new(r"!\[(.*?)\]\(.*?\)").unwrap();
-    re.captures_iter(body)
-        .filter_map(|cap| cap.get(1))
-        .map(|m| m.as_str().to_string())
-        .filter(|s| !s.is_empty())
-        .collect()
-}
-
-/// Create text for embedding: title + body + alt texts
-fn create_embedding_text(post: &Post) -> String {
-    let alt_texts = extract_alt_texts(&post.body);
-    let parts: Vec<&str> = vec![&post.title, &post.body];
-
-    let mut full_text = parts.join(" ");
-
-    if !alt_texts.is_empty() {
-        full_text.push(' ');
-        full_text.push_str(&alt_texts.join(" "));
-    }
-
-    full_text
-}
-
-/// Create text for morphology: title + body + alt texts (without markdown)
+/// Create text for morphology: title + body + alt texts (without `passage:` prefix)
 fn create_morphology_text(post: &Post) -> String {
-    let alt_texts = extract_alt_texts(&post.body);
+    let mut text = format!("{} {}", post.title, post.body);
 
-    // Clean body: remove markdown images but keep other content
-    let re_images = Regex::new(r"!\[.*?\]\(.*?\)").unwrap();
-    let clean_body = re_images.replace_all(&post.body, "");
-
-    let mut text = format!("{} {}", post.title, clean_body);
-
-    if !alt_texts.is_empty() {
+    if !post.alt_texts.is_empty() {
         text.push(' ');
-        text.push_str(&alt_texts.join(" "));
+        text.push_str(&post.alt_texts.join(" "));
     }
 
     text
@@ -90,7 +58,7 @@ fn process_posts(posts: Vec<Post>, model: &EmbeddingModel) -> Vec<PreparedPost> 
     posts
         .into_iter()
         .filter_map(|post| {
-            let embedding_text = create_embedding_text(&post);
+            let embedding_text = post.text_for_embedding();
             let morphology_text = create_morphology_text(&post);
 
             // Generate embedding
