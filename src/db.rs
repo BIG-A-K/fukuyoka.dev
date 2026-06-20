@@ -1,5 +1,32 @@
+use regex::Regex;
+use std::sync::OnceLock;
 use tokio_postgres::{Client, NoTls};
 use std::env;
+
+/// Allowed pattern for SQL identifiers such as table or index names.
+const IDENTIFIER_PATTERN: &str = r"^[A-Za-z_][A-Za-z0-9_]*$";
+
+/// Validate a SQL identifier against a safe whitelist pattern.
+/// tokio-postgres does not support parameterized identifiers, so any value
+/// interpolated into SQL must be validated first to prevent SQL injection.
+pub fn validate_identifier(name: &str) -> Result<&str, String> {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    let re = RE.get_or_init(|| {
+        Regex::new(IDENTIFIER_PATTERN).expect("IDENTIFIER_PATTERN must be a valid regex")
+    });
+    if re.is_match(name) {
+        Ok(name)
+    } else {
+        Err(format!("invalid SQL identifier: {name:?}"))
+    }
+}
+
+/// Read POSTGRES_TABLE from the environment and validate it as a SQL identifier.
+pub fn get_table_name() -> Result<String, String> {
+    let name = env::var("POSTGRES_TABLE")
+        .map_err(|_| "POSTGRES_TABLEを設定してください".to_string())?;
+    validate_identifier(&name).map(|s| s.to_string())
+}
 
 pub async fn connect_db() -> Result<Client, Box<dyn std::error::Error>> {
     let user = env::var("POSTGRES_USER").unwrap_or_else(|_| "postgres".to_string());
@@ -77,7 +104,7 @@ async fn enable_extensions(client: &Client) -> Result<(), Box<dyn std::error::Er
 }
 
 async fn create_table(client: &Client) -> Result<(), Box<dyn std::error::Error>> {
-    let table_name = env::var("POSTGRES_TABLE").map_err(|_| "POSTGRES_TABLEを設定してください")?;
+    let table_name = get_table_name()?;
     client
         .batch_execute(
             &format!(
@@ -98,7 +125,7 @@ async fn create_table(client: &Client) -> Result<(), Box<dyn std::error::Error>>
 }
 
 async fn create_indexes(client: &Client) -> Result<(), Box<dyn std::error::Error>> {
-    let table_name = env::var("POSTGRES_TABLE").map_err(|_| "POSTGRES_TABLEを設定してください")?;
+    let table_name = get_table_name()?;
     client
         .batch_execute(
             &format!(
@@ -120,7 +147,7 @@ async fn insert_data(
     tokens: &str,
     embedding_str: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let table_name = env::var("POSTGRES_TABLE").map_err(|_| "POSTGRES_TABLEを設定してください")?;
+    let table_name = get_table_name()?;
     client
         .execute(
             &format!("INSERT INTO {table_name} (title, url, thumbnail, tokens, embeds) VALUES ($1, $2, $3, $4, $5::text::vector)"),
@@ -134,4 +161,34 @@ pub fn load_json(file_path: &str) -> Result<Vec<serde_json::Value>, Box<dyn std:
     let data = std::fs::read_to_string(file_path)?;
     let json_data: Vec<serde_json::Value> = serde_json::from_str(&data)?;
     Ok(json_data)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_validate_identifier_accepts_valid_names() {
+        for ok in ["posts", "Posts", "_posts", "posts_2024", "P1", "_"] {
+            assert_eq!(validate_identifier(ok), Ok(ok));
+        }
+    }
+
+    #[test]
+    fn test_validate_identifier_rejects_injection_attempts() {
+        for ng in [
+            "posts; DROP TABLE users; --",
+            "posts;",
+            "public.posts",
+            "posts\"",
+            "posts'",
+            "posts`",
+            "post tb",
+            "1posts",
+            "posts-bad",
+            "",
+        ] {
+            assert!(validate_identifier(ng).is_err(), "should reject: {ng}");
+        }
+    }
 }
