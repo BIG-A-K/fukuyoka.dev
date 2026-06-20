@@ -9,7 +9,7 @@ CURRENT_USER := $(shell whoami)
 CURRENT_GROUP := $(shell id -gn)
 BUILD_ARGS := --build-arg UID=$(CURRENT_UID) --build-arg GID=$(CURRENT_GID) --build-arg USER=$(CURRENT_USER) --build-arg GROUP=$(CURRENT_GROUP)
 
-.PHONY: build up down logs in prepare ps hugo clean help \
+.PHONY: build up down logs in prepare ps hugo clean clean-all help \
         restart restart-db \
         db-shell db-logs \
         dev dev-build dev-down dev-logs
@@ -28,7 +28,8 @@ help:
 	@echo "  hugo           - Build the frontend with Hugo"
 	@echo "  db-shell       - Open psql shell in the database container"
 	@echo "  db-logs        - View database container logs"
-	@echo "  clean          - Remove containers, networks, and volumes"
+	@echo "  clean          - Remove containers and networks (volumes preserved)"
+	@echo "  clean-all      - Remove containers, networks, and ALL volumes (including model cache)"
 	@echo ""
 	@echo "Development (localhost):"
 	@echo "  dev-build      - Build images for local dev"
@@ -51,6 +52,9 @@ dev-logs:
 	$(COMPOSE_DEV) logs -f
 
 clean:
+	$(COMPOSE) down --remove-orphans
+
+clean-all:
 	$(COMPOSE) down -v --remove-orphans
 
 build:

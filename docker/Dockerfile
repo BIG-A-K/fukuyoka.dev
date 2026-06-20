@@ -55,6 +55,8 @@ RUN groupadd -f -g ${GID} ${GROUP}
 RUN useradd -ms /bin/zsh -u ${UID} -g ${GID} -G sudo ${USER} &&\
     echo ${USER}:${USER} | chpasswd
 
+RUN mkdir -p /hf-cache && chown ${UID}:${GID} /hf-cache
+
 USER ${USER}
 WORKDIR /home/${USER}
 
