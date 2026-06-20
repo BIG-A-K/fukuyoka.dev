@@ -4,9 +4,8 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use tokio_postgres::Client;
 use serde::{Deserialize, Serialize};
-use std::env;
 
-use crate::db::connect_db;
+use crate::db::{connect_db, get_table_name};
 use crate::embedding::EmbeddingModel;
 use crate::morphology::morphology;
 
@@ -110,9 +109,9 @@ fn rrf_rerank(embed_results: Vec<SearchResult>, token_results: Vec<SearchResult>
 }
 
 async fn vector_similarity_search(client: &Client, embedding: Vec<f32>, top_k: usize) -> Vec<SearchResult> {
-    let table_name = match env::var("POSTGRES_TABLE") {
+    let table_name = match get_table_name() {
         Ok(v) => v,
-        Err(_) => { println!("POSTGRES_TABLEを設定してください"); return Vec::new(); }
+        Err(e) => { println!("{e}"); return Vec::new(); }
     };
     let sql = format!(
         "SELECT title, url, thumbnail, embeds <=> $1::text::vector AS score \
@@ -138,9 +137,9 @@ async fn vector_similarity_search(client: &Client, embedding: Vec<f32>, top_k: u
 }
 
 async fn bm25(client: &Client, tokens: String, top_k: usize) -> Vec<SearchResult> {
-    let table_name = match env::var("POSTGRES_TABLE") {
+    let table_name = match get_table_name() {
         Ok(v) => v,
-        Err(_) => { println!("POSTGRES_TABLEを設定してください"); return Vec::new(); }
+        Err(e) => { println!("{e}"); return Vec::new(); }
     };
     let sql = format!(
         "SELECT title, url, thumbnail, tokens <@> to_bm25query($1, '{table_name}_tokens_idx') AS score \
