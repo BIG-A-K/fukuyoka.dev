@@ -4,6 +4,7 @@
 !.env.example
 
 # Rust build output
+.tmp/
 /target/
 
 # macOS
