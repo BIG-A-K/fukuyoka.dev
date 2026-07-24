@@ -86,6 +86,7 @@ hugo:
 	$(COMPOSE) run --rm fukuyoka_frontend --minify
 
 prepare:
+	$(COMPOSE) run --rm --no-deps --user root $(SERVICE) chown -R $(CURRENT_UID):$(CURRENT_GID) /hf-cache
 	$(COMPOSE) run --rm --no-deps $(SERVICE) cargo run --release --bin prepare -- --all
 
 db-shell:
