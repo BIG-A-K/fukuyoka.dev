@@ -33,37 +33,54 @@
 }
 html.dark {
     color-scheme: dark;
-    /* header */
-    --header-bg: #1b2830;
-    --header-a-color: #c9d1d9;
-    --header-a-hover: #fff;
-    --bg-color: #0d1117;
-    --body-bg: #0d1117;
-    --text-color: #c9d1d9;
-    --border-color: #444;
-    --link-color: #c9d1d9;
-    --link-visited:#9ea4a8;
-    --link-hover: #fff;
-    --link-vh-botton:#5f666c;
-    --main-bg: #161b22;
-    --main-color:#c9d1d9;
-    --main-h2: #adbac7;
-    --main-h3: #8b949e;
-    --title-color: skyblue;
-    /* footer */
-    --footer-bg: #161b22;
-    --footer-link: #58a6ff;
-    --footer-hover: #ff4500;
-    /* gallery */
-    --gallery-bg: #1b2830;
-    --tag-bg: #21262d;
-    --tag-border: #444c56;
-    --tag-label: #c9d1d9;
-    /* blockquote */
-    --quote-bg: #2a2e33;
-    --quote-border: #6e7681;
-    --quote-color: #c9d1d9;
+    /* Neutral dark: fully desaturated surfaces. Links are body-coloured and
+       distinguished by their underline; only the site title keeps a hue. */
+    --header-bg: #1a1a1a;
+    --header-a-color: #cfcfcf;
+    --header-a-hover: #ffffff;
+    --bg-color: #141414;
+    --body-bg: #141414;
+    --text-color: #e6e6e6;
+    --border-color: #6f6f6f;
+    --link-color: #e6e6e6;
+    --link-visited: #b0b0b0;
+    --link-hover: #ffffff;
+    --link-vh-botton: #b0b0b0;
+    --main-bg: #1f1f1f;
+    --main-color: #e6e6e6;
+    --main-h2: #f2f2f2;
+    --main-h3: #d0d0d0;
+    --title-color: #e9d49a;
+    --footer-bg: #1a1a1a;
+    --footer-link: #e6e6e6;
+    --footer-hover: #ffffff;
+    --gallery-bg: #262626;
+    --tag-bg: #262626;
+    --tag-border: #414141;
+    --tag-label: #dcdcdc;
+    --quote-bg: #262626;
+    --quote-border: #6f6f6f;
+    --quote-color: #e6e6e6;
+    --muted-color: #a9a9a9;
+    --fallback-bg: #262626;
+    --button-bg: #e6e6e6;
+    --button-color: #141414;
+    --button-hover: #ffffff;
+    --error-bg: #3a2220;
+    --error-color: #ffb4a8;
+    --error-border: #8a5750;
 }
+
+/* Keep decorative borders quiet and interaction states clearly visible. */
+html.dark main { box-shadow: 0 0 0 1px var(--border-color); }
+html.dark header { border-bottom-width: 1px; }
+html.dark header #title { color: var(--title-color); }
+html.dark :focus-visible { outline: 2px solid var(--link-color); outline-offset: 4px; }
+html.dark main p a:visited { color: var(--link-visited); border-bottom-color: currentColor; }
+html.dark main p a:hover { color: var(--link-hover); border-bottom: 2px solid currentColor; }
+html.dark main h2 a:hover, html.dark main h3 a:hover { color: var(--link-hover); opacity: 1; }
+html.dark article > p.center-text { color: var(--muted-color); }
+
 
 html {
     background-size: 224px;
@@ -205,7 +222,7 @@ img {
 /* Markdown image caption */
 .post-body figure.md-image { margin: 1.2rem auto; text-align: center; }
 .post-body figure.md-image img { display: block; margin: 0 auto; }
-.post-body figure.md-image figcaption { margin-top: 6px; font-size: 0.85rem; color: #5f666c; line-height: 1.3; }
+.post-body figure.md-image figcaption { margin-top: 6px; font-size: 0.85rem; color: var(--muted-color, #5f666c); line-height: 1.3; }
 
 /* Image modal */
 .post-body img.zoomable { cursor: zoom-in; }

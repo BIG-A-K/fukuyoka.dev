@@ -48,7 +48,7 @@
   justify-content: center;
   text-align: center;
   color: var(--link-color);
-  background: #f5f8fa;
+  background: var(--fallback-bg, #f5f8fa);
   padding: 8px;
   font-size: 0.9rem;
 }
@@ -64,7 +64,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.post-grid .thumb-meta { margin: 6px 0 0; color: #5f666c; font-size: 0.85rem; line-height: 1.2; }
+.post-grid .thumb-meta { margin: 6px 0 0; color: var(--muted-color, #5f666c); font-size: 0.85rem; line-height: 1.2; }
 
 .post-grid .thumb-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .post-grid .thumb-tag { background: var(--tag-bg); color: var(--tag-label); border: 1px solid var(--tag-border); padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; }
@@ -72,3 +72,23 @@
 
 /* Reset default p margins inside tiles */
 .post-grid p { margin: 0; padding: 0; }
+
+/* An inset border preserves the existing tile dimensions. */
+html.dark .post-grid li { position: relative; }
+html.dark .post-grid li::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--border-color);
+  border-radius: inherit;
+  pointer-events: none;
+}
+html.dark .post-grid li:focus-within {
+  box-shadow: 0 0 0 2px var(--link-color);
+}
+@media (hover: hover) {
+  html.dark .post-grid li:hover {
+    box-shadow: 0 0 12px rgb(255 255 255 / 10%);
+  }
+  html.dark .post-grid li:hover::after { border-color: var(--muted-color); }
+}

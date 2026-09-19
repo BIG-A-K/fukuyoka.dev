@@ -18,8 +18,8 @@
 
 .search-button {
   padding: 10px 20px;
-  background: var(--header-a-hover);
-  color: #fff;
+  background: var(--button-bg, var(--header-a-hover));
+  color: var(--button-color, #fff);
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -28,7 +28,7 @@
 }
 
 .search-button:hover {
-  background: var(--header-a-color);
+  background: var(--button-hover, var(--header-a-color));
 }
 
 .search-button:disabled {
@@ -50,12 +50,15 @@
 }
 
 .search-status.error {
-  background: #ffeef0;
-  color: #cf222e;
-  border: 1px solid #ffa0a0;
+  background: var(--error-bg, #ffeef0);
+  color: var(--error-color, #cf222e);
+  border: 1px solid var(--error-border, #ffa0a0);
 }
 
 .search-status.empty {
   background: var(--tag-bg);
   color: var(--link-visited);
 }
+
+html.dark .search-input::placeholder { color: var(--muted-color); opacity: 1; }
+html.dark .search-button:disabled { color: var(--muted-color); }
