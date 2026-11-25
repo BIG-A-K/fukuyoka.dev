@@ -98,3 +98,9 @@ header nav ol li a:hover {
     color: var(--header-a-hover);
 }
 
+@media (max-width: 600px) {
+    header nav { right: 12px; font-size: 12px; }
+    header nav ol { gap: 12px; }
+    header nav ol li { margin: 0; }
+    #theme-toggle { left: 8px; }
+}

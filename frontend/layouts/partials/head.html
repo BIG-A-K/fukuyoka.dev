@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/gallery.css">
+    {{ if eq .Section "novel" }}
+    <link rel="stylesheet" href="{{ "css/novel.css" | relURL }}">
+    <script src="{{ "js/novel.js" | relURL }}"></script>
+    <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Title }}を読む。{{ end }}">
+    <link rel="canonical" href="{{ .Permalink }}">
+    {{ if .Draft }}<meta name="robots" content="noindex, nofollow">{{ end }}
+    {{ end }}
     {{ if eq .Type "search" }}
     <link rel="stylesheet" href="/css/search.css">
     {{ end }}

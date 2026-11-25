@@ -2,7 +2,7 @@ services:
   fukuyoka_frontend:
     environment:
       HUGO_ENV: development
-    command: --watch --baseURL http://localhost:51841
+    command: --watch --buildDrafts --baseURL http://localhost:51841
     restart: unless-stopped
 
   fukuyoka_proxy:
